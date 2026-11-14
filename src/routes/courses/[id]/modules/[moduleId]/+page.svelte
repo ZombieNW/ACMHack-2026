@@ -1,6 +1,7 @@
 <script>
 	import LessonModule from '#lib/components/LessonModule.svelte';
 	import QuizModule from '#lib/components/QuizModule.svelte';
+	import BackButton from '#lib/components/BackButton.svelte';
 
 	let { data, form } = $props();
 	let module = $derived(data.module);
@@ -14,12 +15,7 @@
 
 <main class="space-y-4 p-4">
 	<!-- Back Button -->
-	<a
-		href="/courses/{module.courseId}"
-		class="inline-block rounded-lg border-2 border-neutral-800 bg-neutral-900/50 px-3 py-1 text-sm text-neutral-300 transition hover:border-neutral-600 hover:text-white"
-	>
-		← {module.course?.title} Modules
-	</a>
+	<BackButton href="/courses/{module.courseId}" label="{module.course?.title} Modules" />
 
 	<!-- Main Content -->
 	<div class="mx-auto max-w-3xl">
@@ -28,10 +24,10 @@
 			<div class="flex items-baseline justify-between gap-4">
 				<h1 class="text-2xl font-bold text-neutral-100">{module.title}</h1>
 				{#if module.completed}
-					<span class="text-xs font-medium text-neutral-400">✓ Completed</span>
+					<span class="text-sm font-medium text-amber-300">✓ Completed</span>
 				{/if}
 			</div>
-			<div class="mt-1 flex items-baseline justify-between text-xs text-neutral-400">
+			<div class="mt-1 flex items-baseline justify-between text-sm text-neutral-400">
 				<p class="capitalize">
 					{module.type}{#if module.duration}
 						· {module.duration} min{/if}{#if module.points}
@@ -61,7 +57,7 @@
 			{#if module.prevModule}
 				<a
 					href="/courses/{module.courseId}/modules/{module.prevModule.id}"
-					class="inline-block rounded-lg border-2 border-neutral-800 bg-neutral-900/50 px-3 py-1 text-sm text-neutral-300 transition hover:border-neutral-600 hover:text-white"
+					class="btn-ghost"
 				>
 					← {module.prevModule.title}
 				</a>
@@ -72,7 +68,7 @@
 			{#if module.nextModule}
 				<a
 					href="/courses/{module.courseId}/modules/{module.nextModule.id}"
-					class="inline-block rounded-lg border-2 border-neutral-800 bg-neutral-900/50 px-3 py-1 text-sm text-neutral-300 transition hover:border-neutral-600 hover:text-white"
+					class="btn-ghost"
 				>
 					{module.nextModule.title} →
 				</a>

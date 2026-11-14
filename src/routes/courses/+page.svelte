@@ -3,6 +3,7 @@
 	// @ts-nocheck
 	import { invalidateAll } from '$app/navigation';
 	import CourseCard from '#lib/components/CourseCard.svelte';
+	import BackButton from '#lib/components/BackButton.svelte';
 
 	let { data } = $props();
 
@@ -50,29 +51,24 @@
 <main class="space-y-4 p-4">
 	<!-- Header -->
 	<div class="flex items-center gap-4">
-		<a
-			href="/"
-			class="inline-block rounded-lg border-2 border-neutral-800 bg-neutral-900/50 px-3 py-1 text-sm text-neutral-300 transition hover:border-neutral-600 hover:text-white"
-		>
-			← Back
-		</a>
+		<BackButton href="/" />
 		<h1 class="text-2xl font-bold">Courses</h1>
 	</div>
 
 	<!-- Search Box -->
-	<div class="flex flex-wrap gap-2">
+	<div class="flex flex-wrap items-center gap-2">
 		<!-- Searchbar -->
 		<input
 			type="search"
 			placeholder="Search courses..."
 			bind:value={search}
-			class="rounded-lg border-2 border-neutral-800 bg-neutral-900/50 px-3 py-1.5 focus:border-neutral-600 focus:outline-none"
+			class="box-border h-10 rounded-xl border-2 border-neutral-800 bg-neutral-950 px-4 text-sm text-neutral-100 placeholder-neutral-500 transition focus:border-amber-500/80 focus:outline-none sm:w-64"
 		/>
 
 		<!-- Dropdown -->
 		<select
 			bind:value={category}
-			class="rounded-lg border-2 border-neutral-800 bg-neutral-900 px-3 py-1.5 focus:border-neutral-600 focus:outline-none"
+			class="box-border h-10 cursor-pointer rounded-xl border-2 border-neutral-800 bg-neutral-950 px-3 text-sm text-neutral-200 transition focus:border-amber-500/80 focus:outline-none"
 		>
 			{#each categories as c (c)}
 				<option value={c}>{c}</option>
@@ -103,18 +99,8 @@
 	</p>
 
 	<div class="mt-5 flex justify-end gap-2">
-		<button
-			type="button"
-			onclick={() => dialog.close()}
-			class="rounded-lg border-2 border-neutral-700 px-3 py-1.5 text-sm text-neutral-300 hover:cursor-pointer hover:border-neutral-500"
-		>
-			Cancel
-		</button>
-		<button
-			type="button"
-			onclick={confirmToggle}
-			class="rounded-lg border-2 border-neutral-200 bg-neutral-200 px-3 py-1.5 text-sm text-neutral-950 hover:cursor-pointer hover:bg-white"
-		>
+		<button type="button" onclick={() => dialog.close()} class="btn-secondary"> Cancel </button>
+		<button type="button" onclick={confirmToggle} class="btn-primary">
 			{pending?.enrolled ? 'Unenroll' : 'Enroll'}
 		</button>
 	</div>

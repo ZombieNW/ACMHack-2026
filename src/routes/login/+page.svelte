@@ -48,7 +48,7 @@
 				<div>
 					<label
 						for="email"
-						class="block text-xs font-semibold tracking-wider text-neutral-400 uppercase"
+						class="block text-sm font-semibold tracking-wider text-neutral-400 uppercase"
 					>
 						Email Address
 					</label>
@@ -60,7 +60,7 @@
 						autocomplete="email"
 						bind:value={email}
 						placeholder="you@ducklearn.edu"
-						class="mt-1.5 w-full rounded-xl border-2 border-neutral-800 bg-neutral-950 px-4 py-2.5 text-sm text-neutral-100 placeholder-neutral-600 transition focus:border-neutral-500 focus:outline-none"
+						class="input-base mt-1.5 w-full"
 					/>
 				</div>
 
@@ -68,7 +68,7 @@
 					<div class="flex items-center justify-between">
 						<label
 							for="password"
-							class="block text-xs font-semibold tracking-wider text-neutral-400 uppercase"
+							class="block text-sm font-semibold tracking-wider text-neutral-400 uppercase"
 						>
 							Password
 						</label>
@@ -81,23 +81,18 @@
 						autocomplete="current-password"
 						bind:value={password}
 						placeholder="••••••••"
-						class="mt-1.5 w-full rounded-xl border-2 border-neutral-800 bg-neutral-950 px-4 py-2.5 text-sm text-neutral-100 placeholder-neutral-600 transition focus:border-neutral-500 focus:outline-none"
+						class="input-base mt-1.5 w-full"
 					/>
 				</div>
 
-				<button
-					type="submit"
-					class="w-full cursor-pointer rounded-xl border-2 border-yellow-500/50 bg-yellow-500/20 py-2.5 text-sm font-semibold text-yellow-200 transition hover:border-yellow-500 hover:bg-yellow-500/30 active:scale-[0.99]"
-				>
-					Sign In
-				</button>
+				<button type="submit" class="btn-primary w-full"> Sign In </button>
 			</form>
 
 			<div class="mt-6 text-center text-sm text-neutral-400">
 				Don't have an account?{' '}
 				<a
 					href="/register"
-					class="font-medium text-yellow-300 hover:text-yellow-200 hover:underline"
+					class="font-medium text-amber-300 hover:text-amber-200 hover:underline"
 				>
 					Create one
 				</a>

@@ -40,11 +40,7 @@
 
 		<!-- Admin Badge -->
 		{#if user?.isAdmin}
-			<span
-				class="hidden rounded border border-amber-500/30 bg-amber-500/20 px-1.5 py-0.5 text-[10px] font-bold tracking-wider text-amber-300 uppercase sm:inline"
-			>
-				Admin
-			</span>
+			<span class="badge-admin hidden sm:inline"> Admin </span>
 		{/if}
 
 		<!-- Dropdown indicator chevron -->
@@ -74,13 +70,9 @@
 			<!-- User info header -->
 			<div class="border-b border-neutral-800/80 px-3 py-2.5">
 				<p class="truncate text-sm font-bold text-neutral-100">{user?.name}</p>
-				<p class="truncate text-xs text-neutral-400">{user?.email}</p>
+				<p class="truncate text-sm text-neutral-400">{user?.email}</p>
 				{#if user?.isAdmin}
-					<span
-						class="mt-1.5 inline-block rounded border border-amber-500/30 bg-amber-500/20 px-1.5 py-0.5 text-[10px] font-bold tracking-wider text-amber-300 uppercase"
-					>
-						🛡️ Administrator
-					</span>
+					<span class="badge-admin mt-1.5"> 🛡️ Administrator </span>
 				{/if}
 			</div>
 
@@ -90,7 +82,7 @@
 					<a
 						href="/admin"
 						onclick={() => (isOpen = false)}
-						class="flex w-full items-center gap-2 rounded-xl px-3 py-2 text-xs font-medium text-amber-300 transition hover:bg-neutral-900"
+						class="flex w-full items-center gap-2 rounded-xl px-3 py-2 text-sm font-medium text-amber-300 transition hover:bg-neutral-900"
 					>
 						<span>🛡️</span>
 						<span>Admin Dashboard</span>
@@ -100,7 +92,7 @@
 				<form method="POST" action="/logout">
 					<button
 						type="submit"
-						class="flex w-full cursor-pointer items-center gap-2 rounded-xl px-3 py-2 text-xs font-medium text-red-400 transition hover:bg-red-950/30 hover:text-red-300"
+						class="flex w-full cursor-pointer items-center gap-2 rounded-xl px-3 py-2 text-sm font-medium text-neutral-300 transition hover:bg-neutral-900 hover:text-amber-300"
 					>
 						<span>🚪</span>
 						<span>Sign Out</span>

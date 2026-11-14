@@ -2,7 +2,8 @@ import {
 	getCourses,
 	getAnnouncements,
 	getStats,
-	deleteAnnouncement
+	deleteAnnouncement,
+	dismissAnnouncement
 } from '#lib/server/db/queries.js';
 import { getModulesByClass, toggleModuleCompletion } from '#lib/server/db/index.js';
 
@@ -20,7 +21,7 @@ export async function load({ locals }) {
 
 	const [courses, announcements, stats, modulesByClass] = await Promise.all([
 		getCourses(userId),
-		getAnnouncements(),
+		getAnnouncements(userId),
 		getStats(userId),
 		getModulesByClass(userId)
 	]);
@@ -62,14 +63,26 @@ export async function load({ locals }) {
 }
 
 export const actions = {
-	deleteAnnouncement: async ({ request, locals }) => {
-		if (!locals.user?.isAdmin) {
-			return { success: false, error: 'Admin access required' };
-		}
+	dismissAnnouncement: async ({ request, locals }) => {
+		const userId = locals.user?.id ?? 1;
 		const formData = await request.formData();
 		const id = Number(formData.get('id'));
 		if (id) {
-			await deleteAnnouncement(id);
+			await dismissAnnouncement(id, userId);
+		}
+		return { success: true };
+	},
+
+	deleteAnnouncement: async ({ request, locals }) => {
+		const userId = locals.user?.id ?? 1;
+		const formData = await request.formData();
+		const id = Number(formData.get('id'));
+		if (id) {
+			if (locals.user?.isAdmin) {
+				await deleteAnnouncement(id);
+			} else {
+				await dismissAnnouncement(id, userId);
+			}
 		}
 		return { success: true };
 	},

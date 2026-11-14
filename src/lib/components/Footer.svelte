@@ -4,7 +4,7 @@
 
 <footer class="mt-auto border-t-2 border-neutral-800 bg-neutral-900/50">
 	<div
-		class="mx-auto flex flex-col items-center justify-between gap-4 px-4 py-6 text-xs sm:flex-row sm:text-sm"
+		class="mx-auto flex flex-col items-center justify-between gap-4 px-4 py-6 text-sm sm:flex-row"
 	>
 		<div class="flex items-center gap-2">
 			<span class="text-lg select-none">🦆</span>

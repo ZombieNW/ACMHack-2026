@@ -1,5 +1,7 @@
 <script>
 	import ChecklistItem from '#lib/components/ChecklistItem.svelte';
+	import BackButton from '#lib/components/BackButton.svelte';
+	import ProgressBar from '#lib/components/ProgressBar.svelte';
 
 	let { data } = $props();
 
@@ -20,12 +22,7 @@
 
 <main class="space-y-4 p-4">
 	<!-- Back Button -->
-	<a
-		href="/courses"
-		class="inline-block rounded-lg border-2 border-neutral-800 bg-neutral-900/50 px-3 py-1 text-sm text-neutral-300 transition hover:border-neutral-600 hover:text-white"
-	>
-		← Back
-	</a>
+	<BackButton href="/courses" />
 
 	{#if !course}
 		<p class="text-neutral-400">Course not found.</p>
@@ -36,16 +33,14 @@
 				class="relative aspect-2/1 w-full overflow-hidden rounded-xl border-2 border-neutral-800 bg-neutral-900 sm:aspect-3/1"
 			>
 				<img src={course.image} alt={course.title} class="h-full w-full object-cover" />
-				<span
-					class="absolute top-3 left-3 rounded-md border border-neutral-700 bg-neutral-950/80 px-2 py-0.5 text-xs font-medium tracking-wide text-neutral-300"
-				>
+				<span class="badge-tag absolute top-3 left-3">
 					{course.code}
 				</span>
 			</div>
 
 			<!-- Course Title & Meta -->
 			<div class="border-b border-neutral-800 pb-4">
-				<div class="text-xs font-medium tracking-wide text-neutral-400 uppercase">
+				<div class="text-sm font-medium tracking-wide text-neutral-400 uppercase">
 					{course.category}
 				</div>
 				<h1 class="mt-1 text-3xl font-bold text-neutral-100 sm:text-4xl">{course.title}</h1>
@@ -58,7 +53,7 @@
 				<section id="modules" class="space-y-3">
 					<div class="flex items-baseline justify-between">
 						<h2 class="text-xl font-bold text-neutral-100">Modules</h2>
-						<span class="text-xs text-neutral-400"
+						<span class="text-sm text-neutral-400"
 							>{done} of {modules.length} complete</span
 						>
 					</div>
@@ -78,42 +73,37 @@
 
 				<!-- Sidebar (right) -->
 				<aside class="space-y-4">
-					<div class="rounded-xl border-2 border-neutral-800 bg-neutral-900/50 p-4">
-						<div class="text-xs font-medium tracking-wide text-neutral-400 uppercase">
+					<div class="card-base p-4">
+						<div class="text-sm font-medium tracking-wide text-neutral-400 uppercase">
 							Course Progress
 						</div>
 						<div class="mt-2 flex items-baseline justify-between">
-							<span class="text-2xl font-bold text-neutral-100">{progress}%</span>
-							<span class="text-xs text-neutral-400"
+							<span class="text-2xl font-bold text-amber-300">{progress}%</span>
+							<span class="text-sm text-neutral-400"
 								>{done} of {modules.length} completed</span
 							>
 						</div>
-						<div class="mt-2 h-1.5 w-full overflow-hidden rounded-full bg-neutral-800">
-							<div
-								class="h-full rounded-full bg-neutral-200"
-								style="width: {progress}%"
-							></div>
-						</div>
+						<ProgressBar value={progress} class="mt-2" />
 						{#if minutesLeft > 0}
-							<p class="mt-2 text-xs text-neutral-500">{minutesLeft} min remaining</p>
+							<p class="mt-2 text-sm text-neutral-400">{minutesLeft} min remaining</p>
 						{/if}
 					</div>
 
-					<div class="rounded-xl border-2 border-neutral-800 bg-neutral-900/50 p-4">
-						<div class="text-xs font-medium tracking-wide text-neutral-400 uppercase">
+					<div class="card-base p-4">
+						<div class="text-sm font-medium tracking-wide text-neutral-400 uppercase">
 							Up Next
 						</div>
 						{#if nextUp}
 							<p class="mt-2 text-sm font-semibold text-neutral-200">
 								{nextUp.title}
 							</p>
-							<p class="text-xs text-neutral-400 capitalize">
+							<p class="text-sm text-neutral-400 capitalize">
 								{nextUp.type ?? 'lesson'}{#if nextUp.duration}
 									· {nextUp.duration} min{/if}
 							</p>
 							<a
 								href="/courses/{course.id}/modules/{nextUp.id}"
-								class="mt-3 block rounded-lg border-2 border-neutral-800 bg-neutral-900/50 px-3 py-1 text-center text-sm text-neutral-300 transition hover:border-neutral-600 hover:text-white"
+								class="btn-ghost mt-3 w-full justify-center"
 							>
 								Continue →
 							</a>

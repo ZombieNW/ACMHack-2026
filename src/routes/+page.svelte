@@ -57,7 +57,7 @@
 			{#each statList as stat (stat.label)}
 				<div>
 					<div class="text-xl font-bold">{stat.value}</div>
-					<div class="text-[10px] font-medium tracking-wide text-neutral-400 uppercase">
+					<div class="text-sm font-medium tracking-wide text-neutral-400 uppercase">
 						{stat.label}
 					</div>
 				</div>
@@ -74,9 +74,9 @@
 		<!-- To-do + announcements (right) -->
 		<aside class="lg:sticky lg:top-4 lg:self-start">
 			<!-- To-do -->
-			<h2 class="text-2xl">To-Do</h2>
+			<h2 class="text-2xl font-bold">To-Do</h2>
 
-			<div class="mt-2 rounded-xl border-2 border-neutral-800 bg-neutral-900/50 p-4">
+			<div class="card-base mt-2 p-4">
 				<ul class="divide-y divide-neutral-800/60">
 					{#each todos as todo (todo.id)}
 						{@const due = dueInfo(todo.dueDate)}
@@ -91,7 +91,7 @@
 								<button
 									type="submit"
 									aria-label="Mark {todo.title} complete"
-									class="flex h-5 w-5 items-center justify-center rounded border border-neutral-700 bg-neutral-950 text-xs text-transparent transition hover:cursor-pointer hover:border-neutral-400 hover:text-neutral-400"
+									class="flex h-5 w-5 items-center justify-center rounded border border-neutral-700 bg-neutral-950 text-sm text-transparent transition hover:cursor-pointer hover:border-amber-400 hover:text-amber-400"
 								>
 									✓
 								</button>
@@ -99,10 +99,10 @@
 
 							<div class="min-w-0 flex-1">
 								<div class="truncate text-sm text-neutral-200">{todo.title}</div>
-								<div class="truncate text-xs text-neutral-500">
+								<div class="truncate text-sm text-neutral-400">
 									{todo.courseCode} · {todo.courseTitle}
 								</div>
-								<div class="text-xs">
+								<div class="text-sm">
 									{#if due}
 										<span class={due.cls}>{due.label}</span>
 									{:else}
@@ -123,10 +123,7 @@
 				</ul>
 
 				{#if extra > 0}
-					<a
-						href="/modules"
-						class="mt-2 block text-center text-xs text-neutral-400 hover:text-neutral-200 hover:underline"
-					>
+					<a href="/modules" class="btn-ghost mt-3 w-full justify-center">
 						+ {extra} more
 					</a>
 				{/if}
@@ -134,22 +131,22 @@
 
 			<!-- Announcements -->
 			{#if announcements.length}
-				<h2 class="mt-6 text-2xl">Announcements</h2>
+				<h2 class="mt-6 text-2xl font-bold">Announcements</h2>
 
-				<div class="mt-2 rounded-xl border-2 border-neutral-800 bg-neutral-900/50 p-4">
+				<div class="card-base mt-2 p-4">
 					<ul class="divide-y divide-neutral-800/60">
 						{#each announcements as a, i (a.id ?? i)}
 							<li
 								class="flex items-center justify-between gap-3 py-2 text-sm text-neutral-300 first:pt-0 last:pb-0"
 							>
 								<span class="min-w-0">{a.content ?? a}</span>
-								{#if data?.user?.isAdmin && a.id != null}
-									<form method="POST" action="?/deleteAnnouncement" use:enhance>
+								{#if a.id != null}
+									<form method="POST" action="?/dismissAnnouncement" use:enhance>
 										<input type="hidden" name="id" value={a.id} />
 										<button
 											type="submit"
 											aria-label="Dismiss announcement"
-											class="text-xs transition hover:scale-110 hover:cursor-pointer"
+											class="text-sm transition hover:scale-110 hover:cursor-pointer"
 										>
 											✖️
 										</button>

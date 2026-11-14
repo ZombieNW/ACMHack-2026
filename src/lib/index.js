@@ -3,3 +3,5 @@ export { default as AccountPreview } from './components/AccountPreview.svelte';
 export { default as Header } from './components/Header.svelte';
 export { default as Footer } from './components/Footer.svelte';
 export { default as ChecklistItem } from './components/ChecklistItem.svelte';
+export { default as BackButton } from './components/BackButton.svelte';
+export { default as ProgressBar } from './components/ProgressBar.svelte';

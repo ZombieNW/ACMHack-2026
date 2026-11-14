@@ -8,7 +8,7 @@
 		if (id) {
 			const formData = new FormData();
 			formData.append('id', String(id));
-			await fetch('?/deleteAnnouncement', {
+			await fetch('?/dismissAnnouncement', {
 				method: 'POST',
 				body: formData
 			});
@@ -23,9 +23,7 @@
 		<p class="text-sm text-neutral-400">No announcements, yipee!!</p>
 	{/if}
 	{#each announcements as item, index (item.id ?? item.content ?? index)}
-		<div
-			class="my-2 flex justify-between rounded-xl border-2 border-neutral-800 bg-neutral-900/50 p-2"
-		>
+		<div class="card-base my-2 flex justify-between p-3">
 			<h2>{item.content}</h2>
 			<button
 				class="transition-all hover:scale-110 hover:cursor-pointer"

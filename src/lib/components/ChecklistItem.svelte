@@ -6,12 +6,12 @@
 
 <a
 	href="/courses/{targetCourseId}/modules/{module.id}"
-	class="group flex items-center gap-3 rounded-xl border-2 border-neutral-800 bg-neutral-900/50 p-3 transition hover:border-neutral-600 hover:bg-neutral-900"
+	class="card-interactive group flex items-center gap-3 p-3"
 >
 	<!-- Clean checkbox box -->
 	<span
-		class="flex h-5 w-5 shrink-0 items-center justify-center rounded border text-xs {module.completed
-			? 'border-neutral-500 bg-neutral-800 text-neutral-300'
+		class="flex h-5 w-5 shrink-0 items-center justify-center rounded border text-sm {module.completed
+			? 'border-amber-500/50 bg-amber-500/20 text-amber-300'
 			: 'border-neutral-700 text-transparent'}"
 	>
 		✓
@@ -25,7 +25,7 @@
 		>
 			{module.title}
 		</div>
-		<div class="text-xs text-neutral-400 capitalize">
+		<div class="text-sm text-neutral-400 capitalize">
 			{module.type ?? 'lesson'}{#if module.duration}
 				<span> </span> · {module.duration} min{/if}{#if module.points}
 				<span> </span> · {module.points} pts{/if}

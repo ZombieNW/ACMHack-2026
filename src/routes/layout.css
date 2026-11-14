@@ -7,6 +7,39 @@ html {
 	font-style: normal;
 }
 
+/* Reusable UI Utility Classes */
+.btn-ghost {
+	@apply inline-flex cursor-pointer items-center gap-1.5 rounded-xl border-2 border-neutral-800 bg-neutral-900/50 px-3.5 py-1.5 text-sm font-medium text-neutral-300 transition hover:border-neutral-600 hover:text-white;
+}
+
+.btn-primary {
+	@apply inline-flex cursor-pointer items-center justify-center gap-1.5 rounded-xl border-2 border-amber-500/60 bg-amber-500/20 px-4 py-2 text-sm font-semibold text-amber-200 transition hover:border-amber-400 hover:bg-amber-500/30 active:scale-[0.99];
+}
+
+.btn-secondary {
+	@apply inline-flex cursor-pointer items-center justify-center gap-1.5 rounded-xl border-2 border-neutral-700 bg-neutral-800/80 px-4 py-2 text-sm font-semibold text-neutral-200 transition hover:border-neutral-500 hover:bg-neutral-800 active:scale-[0.99];
+}
+
+.card-base {
+	@apply rounded-xl border-2 border-neutral-800 bg-neutral-900/50;
+}
+
+.card-interactive {
+	@apply rounded-xl border-2 border-neutral-800 bg-neutral-900/50 transition hover:border-neutral-700 hover:bg-neutral-900;
+}
+
+.input-base {
+	@apply block w-full rounded-xl border-2 border-neutral-800 bg-neutral-950 px-4 py-2 text-sm text-neutral-100 placeholder-neutral-500 transition focus:border-amber-500/80 focus:outline-none;
+}
+
+.badge-tag {
+	@apply inline-flex items-center gap-1 rounded-md border border-neutral-700/80 bg-neutral-950/80 px-2 py-0.5 text-sm font-medium text-neutral-300;
+}
+
+.badge-admin {
+	@apply inline-flex items-center gap-1 rounded-md border border-amber-500/40 bg-amber-500/20 px-2 py-0.5 text-sm font-semibold tracking-wide text-amber-300;
+}
+
 /* Custom Prose Styles for Markdown */
 .prose {
 	max-width: none;
@@ -55,14 +88,14 @@ html {
 }
 
 .prose a {
-	color: #e5e5e5;
+	color: #fbbf24;
 	text-decoration: underline;
 	text-underline-offset: 4px;
 	transition: color 0.15s ease;
 }
 
 .prose a:hover {
-	color: #ffffff;
+	color: #fde68a;
 }
 
 .prose ul {

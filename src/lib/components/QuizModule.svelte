@@ -92,7 +92,7 @@
 
 						{#if isLocked}
 							<span
-								class="text-xs font-medium {isCorrect
+								class="text-sm font-medium {isCorrect
 									? 'text-emerald-400'
 									: 'text-rose-400'}"
 							>
@@ -136,17 +136,12 @@
 					<button
 						type="button"
 						disabled
-						class="cursor-not-allowed rounded-lg border-2 border-neutral-800 bg-neutral-900/50 px-3 py-1 text-sm text-neutral-500"
+						class="btn-secondary cursor-not-allowed opacity-60"
 					>
 						Submitted ✓
 					</button>
 				{:else}
-					<button
-						type="submit"
-						class="cursor-pointer rounded-lg border-2 border-neutral-800 bg-neutral-900/50 px-3 py-1 text-sm text-neutral-300 transition hover:border-neutral-600 hover:text-white"
-					>
-						Submit Quiz
-					</button>
+					<button type="submit" class="btn-primary px-4 py-1.5"> Submit Quiz </button>
 				{/if}
 			</div>
 		</form>

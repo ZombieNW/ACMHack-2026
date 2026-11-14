@@ -1,5 +1,6 @@
 <script>
 	import ChecklistItem from '#lib/components/ChecklistItem.svelte';
+	import BackButton from '#lib/components/BackButton.svelte';
 
 	let { data } = $props();
 
@@ -13,12 +14,7 @@
 <main class="p-4">
 	<!-- Header -->
 	<div class="flex items-center gap-4">
-		<a
-			href="/"
-			class="inline-block rounded-lg border-2 border-neutral-800 bg-neutral-900/50 px-3 py-1 text-sm text-neutral-300 transition hover:border-neutral-600 hover:text-white"
-		>
-			← Back
-		</a>
+		<BackButton href="/" />
 		<h1 class="text-2xl font-bold">Modules</h1>
 	</div>
 
@@ -35,10 +31,7 @@
 						You are not currently enrolled in any classes. Browse available courses to
 						start tracking assignments!
 					</p>
-					<a
-						href="/courses"
-						class="mt-4 inline-flex items-center gap-1.5 rounded-xl border border-yellow-500/50 bg-yellow-500/20 px-4 py-2 text-xs font-semibold text-yellow-200 transition hover:bg-yellow-500/30"
-					>
+					<a href="/courses" class="btn-primary mt-4 inline-flex items-center gap-1.5">
 						<span>📚</span> Explore Courses
 					</a>
 				</div>
@@ -58,9 +51,7 @@
 								<div
 									class="absolute inset-0 bg-linear-to-r from-neutral-950/80 via-neutral-950/30 to-transparent"
 								></div>
-								<span
-									class="absolute bottom-2.5 left-3 rounded-md border border-neutral-700/80 bg-neutral-950/80 px-2 py-0.5 text-xs font-semibold text-neutral-200 backdrop-blur-xs"
-								>
+								<span class="badge-tag absolute bottom-2.5 left-3 backdrop-blur-xs">
 									{classItem.code}
 								</span>
 							</div>
@@ -72,12 +63,12 @@
 							<h2 class="text-lg font-semibold text-neutral-100">
 								<a
 									href="/courses/{classItem.id}"
-									class="transition hover:text-yellow-300 hover:underline"
+									class="transition hover:text-amber-300 hover:underline"
 								>
 									{classItem.code}: {classItem.title}
 								</a>
 							</h2>
-							<span class="text-xs text-neutral-400">
+							<span class="text-sm text-neutral-400">
 								{classItem.completedCount}/{classItem.totalCount} completed
 							</span>
 						</div>

@@ -107,13 +107,47 @@ export const announcements = sqliteTable('announcements', {
 		.$defaultFn(() => new Date())
 });
 
+// User-specific dismissed announcements
+export const announcementDismissals = sqliteTable(
+	'announcement_dismissals',
+	{
+		id: integer('id').primaryKey({ autoIncrement: true }),
+		userId: integer('user_id')
+			.notNull()
+			.references(() => users.id, { onDelete: 'cascade' }),
+		announcementId: integer('announcement_id')
+			.notNull()
+			.references(() => announcements.id, { onDelete: 'cascade' }),
+		dismissedAt: integer('dismissed_at', { mode: 'timestamp_ms' })
+			.notNull()
+			.$defaultFn(() => new Date())
+	},
+	(t) => [unique().on(t.userId, t.announcementId)]
+);
+
 /*
   Drizzle Relations
 */
 export const usersRelations = relations(users, ({ many }) => ({
 	enrollments: many(enrollments),
 	progress: many(userProgress),
-	sessions: many(sessions)
+	sessions: many(sessions),
+	dismissals: many(announcementDismissals)
+}));
+
+export const announcementsRelations = relations(announcements, ({ many }) => ({
+	dismissals: many(announcementDismissals)
+}));
+
+export const announcementDismissalsRelations = relations(announcementDismissals, ({ one }) => ({
+	user: one(users, {
+		fields: [announcementDismissals.userId],
+		references: [users.id]
+	}),
+	announcement: one(announcements, {
+		fields: [announcementDismissals.announcementId],
+		references: [announcements.id]
+	})
 }));
 
 export const sessionsRelations = relations(sessions, ({ one }) => ({

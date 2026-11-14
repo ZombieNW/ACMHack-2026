@@ -58,12 +58,47 @@ export async function getAllUsers() {
 }
 
 /**
- * Get all announcements (newest first)
+ * Get all announcements (newest first), optionally filtered by dismissing user
+ * @param {number | null} [userId=null]
  */
-export async function getAnnouncements() {
-	return db.query.announcements.findMany({
+export async function getAnnouncements(userId = null) {
+	if (!userId) {
+		return db.query.announcements.findMany({
+			orderBy: [desc(schema.announcements.id)]
+		});
+	}
+
+	const dismissed = await db
+		.select({ announcementId: schema.announcementDismissals.announcementId })
+		.from(schema.announcementDismissals)
+		.where(eq(schema.announcementDismissals.userId, userId));
+
+	const dismissedIds = new Set(dismissed.map((d) => d.announcementId));
+
+	const all = await db.query.announcements.findMany({
 		orderBy: [desc(schema.announcements.id)]
 	});
+
+	if (dismissedIds.size === 0) return all;
+	return all.filter((a) => !dismissedIds.has(a.id));
+}
+
+/**
+ * Dismiss an announcement for a specific user
+ * @param {number} announcementId
+ * @param {number} userId
+ */
+export async function dismissAnnouncement(announcementId, userId) {
+	if (!announcementId || !userId) return;
+	await db
+		.insert(schema.announcementDismissals)
+		.values({
+			announcementId,
+			userId,
+			dismissedAt: new Date()
+		})
+		.onConflictDoNothing()
+		.run();
 }
 
 /**
@@ -319,7 +354,7 @@ export async function getStats(userId = 1) {
 		{ label: 'Classes Enrolled', value: enrolled.length },
 		{ label: 'Assignments Completed', value: done },
 		{ label: 'Assignments Remaining', value: remaining },
-		{ label: 'Est. Time Remaining', value: minutes }
+		{ label: 'Est. Mins Remaining', value: minutes }
 	];
 }
 

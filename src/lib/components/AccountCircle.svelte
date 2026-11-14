@@ -6,8 +6,8 @@
 </script>
 
 <div
-	class="flex aspect-square h-8 w-8 shrink-0 items-center justify-center rounded-full bg-linear-to-br from-yellow-100 to-neutral-200 text-sm font-bold text-neutral-900 select-none {className}"
-	style="background: linear-gradient(135deg, #fef9c3, #e5e5e5);"
+	class="flex aspect-square h-8 w-8 shrink-0 items-center justify-center rounded-full bg-linear-to-br from-amber-200 to-amber-100 text-sm font-bold text-amber-950 select-none {className}"
+	style="background: linear-gradient(135deg, #fde68a, #fef3c7);"
 	aria-label={displayName || 'Account avatar'}
 >
 	{initial}
