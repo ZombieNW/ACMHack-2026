@@ -1,2 +1,8 @@
-<h1>Welcome to SvelteKit</h1>
-<p>Visit <a href="https://svelte.dev/docs/kit">svelte.dev/docs/kit</a> to read the documentation</p>
+<!-- home page -->
+<script>
+    import Announcements from "#lib/components/Announcements.svelte";
+</script>
+
+<main class="p-4">
+    <Announcements />
+</main>
