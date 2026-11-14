@@ -2,17 +2,35 @@
 	import { enhance } from '$app/forms';
 	import { untrack } from 'svelte';
 
-	let { module, form } = $props();
+	let { module, form, quizScore = $bindable(null), onScoreChange = () => {} } = $props();
 
 	let localAnswers = $state({});
 	let localSubmitted = $state(false);
 
-	// Derive active answers without mutating state in an effect
 	let selectedAnswers = $derived(
 		form?.answers ? { ...localAnswers, ...form.answers } : localAnswers
 	);
 
 	let isLocked = $derived(Boolean(module?.completed || localSubmitted || form?.submitted));
+
+	let questions = $derived(module?.quizQuestions || []);
+	let score = $derived(questions.filter((q) => selectedAnswers[q.id] === q.answer).length);
+
+	// Sync score to parent via bindable and callback
+	$effect(() => {
+		if (isLocked && questions.length > 0) {
+			const info = { score, total: questions.length };
+			untrack(() => {
+				quizScore = info;
+				onScoreChange(info);
+			});
+		} else {
+			untrack(() => {
+				quizScore = null;
+				onScoreChange(null);
+			});
+		}
+	});
 
 	// Sync from localStorage only when module.id changes
 	$effect(() => {
@@ -41,12 +59,12 @@
 	}
 </script>
 
-<div class="mt-6">
+<div class="mt-6 space-y-6">
 	{#if module?.content}
 		<p class="text-sm text-neutral-400">{module.content}</p>
 	{/if}
 
-	{#if module?.quizQuestions && module.quizQuestions.length > 0}
+	{#if questions.length > 0}
 		<form
 			method="POST"
 			action="?/submitQuiz"
@@ -58,59 +76,74 @@
 					await update();
 				};
 			}}
-			class="mt-6 space-y-8"
+			class="space-y-6"
 		>
 			<input type="hidden" name="moduleId" value={module.id} />
 
-			{#each module.quizQuestions as question, i (question.id)}
-				<div>
-					<p class="text-sm font-medium text-neutral-200">
-						{i + 1}. {question.question}
-					</p>
-					<div class="mt-2 space-y-1.5 pl-3">
+			{#each questions as question, i (question.id)}
+				{@const userAnswer = selectedAnswers[question.id]}
+				{@const isCorrect = isLocked && userAnswer === question.answer}
+
+				<div class="space-y-2">
+					<div class="flex items-baseline justify-between gap-4">
+						<p class="text-sm font-semibold text-neutral-200">
+							{i + 1}. {question.question}
+						</p>
+
+						{#if isLocked}
+							<span
+								class="text-xs font-medium {isCorrect
+									? 'text-emerald-400'
+									: 'text-rose-400'}"
+							>
+								{isCorrect ? 'Correct' : 'Incorrect'}
+							</span>
+						{/if}
+					</div>
+
+					<div class="space-y-1.5 pl-3">
 						{#each question.options as option, optIndex}
-							{@const checked = selectedAnswers[question.id] === optIndex}
+							{@const isSelected = userAnswer === optIndex}
+							{@const isThisCorrect = isLocked && question.answer === optIndex}
+							{@const isThisWrong = isLocked && isSelected && !isThisCorrect}
+
 							<label
-								class="flex cursor-pointer items-center gap-2 text-sm {checked
-									? 'font-medium text-neutral-100'
-									: 'text-neutral-400'}"
+								class="flex items-center gap-2 text-sm {isThisCorrect
+									? 'text-emerald-400'
+									: isThisWrong
+										? 'text-rose-400'
+										: isSelected
+											? 'text-neutral-100'
+											: 'text-neutral-400'}"
 							>
 								<input
 									type="radio"
 									name="question-{question.id}"
 									value={optIndex}
 									disabled={isLocked}
-									{checked}
+									checked={isSelected}
 									onchange={() => handleOptionChange(question.id, optIndex)}
-									class="accent-neutral-200"
 								/>
 								<span>{option}</span>
-								{#if isLocked && checked}
-									<span class="text-xs text-neutral-500">(Your answer)</span>
-								{/if}
 							</label>
 						{/each}
 					</div>
 				</div>
 			{/each}
 
-			<!-- Bottom Submit Button -->
-			<div class="border-t border-neutral-800/80 pt-4">
+			<div class="pt-2">
 				{#if isLocked}
-					<div class="flex items-center gap-3">
-						<button
-							type="button"
-							disabled
-							class="cursor-not-allowed rounded border border-neutral-800 bg-neutral-900/60 px-4 py-1.5 text-xs font-medium text-neutral-400"
-						>
-							Quiz Submitted ✓
-						</button>
-						<span class="text-xs text-neutral-500">Your answers are locked.</span>
-					</div>
+					<button
+						type="button"
+						disabled
+						class="cursor-not-allowed rounded-lg border-2 border-neutral-800 bg-neutral-900/50 px-3 py-1 text-sm text-neutral-500"
+					>
+						Submitted ✓
+					</button>
 				{:else}
 					<button
 						type="submit"
-						class="cursor-pointer rounded border border-neutral-700 bg-neutral-900 px-4 py-1.5 text-xs font-medium text-neutral-200 transition hover:border-neutral-500 hover:text-white"
+						class="cursor-pointer rounded-lg border-2 border-neutral-800 bg-neutral-900/50 px-3 py-1 text-sm text-neutral-300 transition hover:border-neutral-600 hover:text-white"
 					>
 						Submit Quiz
 					</button>
@@ -118,6 +151,6 @@
 			</div>
 		</form>
 	{:else}
-		<p class="mt-4 text-sm text-neutral-500 italic">No questions for this quiz.</p>
+		<p class="text-sm text-neutral-500 italic">No questions for this quiz.</p>
 	{/if}
 </div>
