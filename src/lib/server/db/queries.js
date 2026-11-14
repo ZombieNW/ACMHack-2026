@@ -14,6 +14,50 @@ export async function getUser(id = 1) {
 }
 
 /**
+ * Get user profile by email
+ * @param {string} email
+ */
+export async function getUserByEmail(email) {
+	if (!email) return null;
+	const user = await db.query.users.findFirst({
+		where: eq(schema.users.email, email.toLowerCase().trim())
+	});
+	return user ?? null;
+}
+
+/**
+ * Create a new user
+ * @param {{ name: string, email: string, passwordHash: string, isAdmin?: boolean }} data
+ */
+export async function createUser({ name, email, passwordHash, isAdmin = false }) {
+	const [user] = await db
+		.insert(schema.users)
+		.values({
+			name: name.trim(),
+			email: email.toLowerCase().trim(),
+			passwordHash,
+			isAdmin: Boolean(isAdmin)
+		})
+		.returning();
+	return user;
+}
+
+/**
+ * Get all users for admin view
+ */
+export async function getAllUsers() {
+	return db.query.users.findMany({
+		columns: {
+			id: true,
+			name: true,
+			email: true,
+			isAdmin: true
+		},
+		orderBy: [asc(schema.users.id)]
+	});
+}
+
+/**
  * Get all announcements (newest first)
  */
 export async function getAnnouncements() {
@@ -412,6 +456,22 @@ export async function markModuleCompleted(moduleId, userId = 1) {
 		});
 	}
 	return { completed: true };
+}
+
+/**
+ * Create a new announcement
+ * @param {string} content
+ */
+export async function createAnnouncement(content) {
+	const [announcement] = await db
+		.insert(schema.announcements)
+		.values({
+			content,
+			createdAt: new Date()
+		})
+		.returning();
+
+	return announcement;
 }
 
 /**

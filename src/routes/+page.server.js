@@ -15,14 +15,13 @@ function toTime(value) {
 	return Number.isNaN(t) ? null : t;
 }
 
-export async function load({ parent }) {
-	const parentData = await parent();
-	const userId = parentData?.user?.id ?? 1;
+export async function load({ locals }) {
+	const userId = locals.user?.id ?? 1;
 
 	const [courses, announcements, stats, modulesByClass] = await Promise.all([
-		getCourses(),
+		getCourses(userId),
 		getAnnouncements(),
-		getStats(),
+		getStats(userId),
 		getModulesByClass(userId)
 	]);
 
@@ -63,7 +62,10 @@ export async function load({ parent }) {
 }
 
 export const actions = {
-	deleteAnnouncement: async ({ request }) => {
+	deleteAnnouncement: async ({ request, locals }) => {
+		if (!locals.user?.isAdmin) {
+			return { success: false, error: 'Admin access required' };
+		}
 		const formData = await request.formData();
 		const id = Number(formData.get('id'));
 		if (id) {

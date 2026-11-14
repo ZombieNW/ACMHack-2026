@@ -1,9 +1,7 @@
 import { getModulesByClass, toggleModuleCompletion } from '#lib/server/db/index.js';
 
-export async function load({ parent }) {
-	const parentData = await parent();
-	const user = parentData?.user;
-	const userId = user?.id ?? 1;
+export async function load({ locals }) {
+	const userId = locals.user?.id ?? 1;
 
 	const modulesByClass = await getModulesByClass(userId);
 
@@ -29,11 +27,12 @@ export async function load({ parent }) {
 }
 
 export const actions = {
-	markModuleComplete: async ({ request }) => {
+	markModuleComplete: async ({ request, locals }) => {
+		const userId = locals.user?.id ?? 1;
 		const formData = await request.formData();
 		const moduleId = Number(formData.get('moduleId'));
 		if (moduleId) {
-			await toggleModuleCompletion(moduleId);
+			await toggleModuleCompletion(moduleId, userId);
 		}
 		return { success: true };
 	}

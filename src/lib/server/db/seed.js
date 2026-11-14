@@ -1,17 +1,29 @@
 import Database from 'better-sqlite3';
 import { drizzle } from 'drizzle-orm/better-sqlite3';
 import * as schema from './schema.js';
+import { hashPassword } from '../crypto.js';
 
 export function getDb(dbPath = process.env.DATABASE_URL || 'local.db') {
 	const client = new Database(dbPath);
 	return { client, db: drizzle(client, { schema }) };
 }
 
-const initialUser = {
-	id: 1,
-	name: 'Jordan Baker',
-	email: 'jordan.baker@ducklearn.edu'
-};
+const initialUsers = [
+	{
+		id: 1,
+		name: 'Jordan Baker',
+		email: 'jordan.baker@ducklearn.edu',
+		passwordHash: hashPassword('password123'),
+		isAdmin: false
+	},
+	{
+		id: 2,
+		name: 'Admin Duck',
+		email: 'admin@ducklearn.edu',
+		passwordHash: hashPassword('admin123'),
+		isAdmin: true
+	}
+];
 
 const initialCourses = [
 	{
@@ -264,8 +276,16 @@ export async function seed(client, db) {
 
 	console.log('🌱 Seeding database with clean module & user-enrollment hierarchy...');
 
-	// 1. Seed User
-	const [seededUser] = db.insert(schema.users).values(initialUser).returning().all();
+	// 1. Seed Users
+	for (const u of initialUsers) {
+		db.insert(schema.users).values(u).onConflictDoNothing().run();
+	}
+	const seededUser =
+		db
+			.select()
+			.from(schema.users)
+			.where(schema.users.id === 1)
+			.all()[0] || initialUsers[0];
 
 	// 2. Seed Courses, Enrollments, Modules, Questions & User Progress
 	for (const c of initialCourses) {

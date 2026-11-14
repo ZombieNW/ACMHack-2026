@@ -5,7 +5,18 @@ import { relations } from 'drizzle-orm';
 export const users = sqliteTable('users', {
 	id: integer('id').primaryKey({ autoIncrement: true }),
 	name: text('name').notNull(),
-	email: text('email')
+	email: text('email').notNull().unique(),
+	passwordHash: text('password_hash').notNull(),
+	isAdmin: integer('is_admin', { mode: 'boolean' }).notNull().default(false)
+});
+
+// Sessions
+export const sessions = sqliteTable('sessions', {
+	id: text('id').primaryKey(),
+	userId: integer('user_id')
+		.notNull()
+		.references(() => users.id, { onDelete: 'cascade' }),
+	expiresAt: integer('expires_at', { mode: 'timestamp_ms' }).notNull()
 });
 
 // Courses
@@ -101,7 +112,15 @@ export const announcements = sqliteTable('announcements', {
 */
 export const usersRelations = relations(users, ({ many }) => ({
 	enrollments: many(enrollments),
-	progress: many(userProgress)
+	progress: many(userProgress),
+	sessions: many(sessions)
+}));
+
+export const sessionsRelations = relations(sessions, ({ one }) => ({
+	user: one(users, {
+		fields: [sessions.userId],
+		references: [users.id]
+	})
 }));
 
 export const coursesRelations = relations(courses, ({ many }) => ({

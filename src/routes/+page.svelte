@@ -81,7 +81,12 @@
 					{#each todos as todo (todo.id)}
 						{@const due = dueInfo(todo.dueDate)}
 						<li class="flex items-start gap-3 py-2 first:pt-0">
-							<form method="POST" action="?/markModuleComplete" use:enhance class="pt-0.5">
+							<form
+								method="POST"
+								action="?/markModuleComplete"
+								use:enhance
+								class="pt-0.5"
+							>
 								<input type="hidden" name="moduleId" value={todo.id} />
 								<button
 									type="submit"
@@ -138,7 +143,7 @@
 								class="flex items-center justify-between gap-3 py-2 text-sm text-neutral-300 first:pt-0 last:pb-0"
 							>
 								<span class="min-w-0">{a.content ?? a}</span>
-								{#if a.id != null}
+								{#if data?.user?.isAdmin && a.id != null}
 									<form method="POST" action="?/deleteAnnouncement" use:enhance>
 										<input type="hidden" name="id" value={a.id} />
 										<button

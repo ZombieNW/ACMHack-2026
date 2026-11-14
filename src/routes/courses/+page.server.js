@@ -1,9 +1,7 @@
 import { getCourses, toggleCourseEnrollment } from '#lib/server/db/index.js';
 
-export async function load({ parent }) {
-	const parentData = await parent();
-	const user = parentData?.user;
-	const userId = user?.id ?? 1;
+export async function load({ locals }) {
+	const userId = locals.user?.id ?? 1;
 
 	const courses = await getCourses(userId);
 	return {
@@ -12,10 +10,8 @@ export async function load({ parent }) {
 }
 
 export const actions = {
-	toggleEnrollment: async ({ request, parent }) => {
-		const parentData = await parent();
-		const user = parentData?.user;
-		const userId = user?.id ?? 1;
+	toggleEnrollment: async ({ request, locals }) => {
+		const userId = locals.user?.id ?? 1;
 
 		const formData = await request.formData();
 		const courseId = Number(formData.get('courseId'));
