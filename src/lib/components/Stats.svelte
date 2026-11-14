@@ -1,20 +1,42 @@
 <script>
-    import { announcements as initialAnnouncements } from "../../routes/placeholder";
+  import { initialCourses } from '../../routes/placeholder';
 
-    let announcements = $state(initialAnnouncements);
+  const stats = (() => {
+    const enrolled = initialCourses.filter((c) => c.enrolled);
 
-    /** @param {number} index */
-    function removeItem(index) {
-        announcements.splice(index, 1);
+    let done = 0;
+    let remaining = 0;
+    let minutes = 0;
+
+    for (const c of enrolled) {
+      for (const l of c.lessons) {
+        if (l.completed) {
+          done++;
+        } else {
+          remaining++;
+          minutes += l.duration;
+        }
+      }
     }
+
+    return [
+      { label: 'Classes Enrolled', value: enrolled.length },
+      { label: 'Assignments Completed', value: done },
+      { label: 'Assignments Remaining', value: remaining },
+      { label: 'Est. Time Remaining', value: minutes }
+    ];
+  })();
 </script>
 
-<h1 class="text-2xl">Announcements</h1>
-<div>
-    {#each announcements as item, index (item)}
-        <div class="p-2 rounded-xl bg-neutral-900/50 border-neutral-800 my-2 border-2 flex justify-between">
-            <h2>{item}</h2>
-            <button class="hover:cursor-pointer hover:scale-110 transition-all" onclick={() => removeItem(index)}>✖️</button>
-        </div>
-    {/each}
+<h1 class="text-2xl">Statistics</h1>
+
+<div class="grid grid-cols-2 gap-3 my-2">
+  {#each stats as stat (stat.label)}
+    <div class="rounded-xl border-2 border-neutral-800 bg-neutral-900/50 p-4">
+      <div class="text-2xl font-bold">{stat.value}</div>
+      <div class="mt-1 text-xs font-medium tracking-wide text-neutral-400 uppercase">
+        {stat.label}
+      </div>
+    </div>
+  {/each}
 </div>
