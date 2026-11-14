@@ -400,10 +400,7 @@ export async function markModuleCompleted(moduleId, userId = 1) {
 	if (!modId || isNaN(modId)) return { completed: false };
 
 	const existing = await db.query.userProgress.findFirst({
-		where: and(
-			eq(schema.userProgress.userId, uid),
-			eq(schema.userProgress.moduleId, modId)
-		)
+		where: and(eq(schema.userProgress.userId, uid), eq(schema.userProgress.moduleId, modId))
 	});
 
 	if (!existing) {
