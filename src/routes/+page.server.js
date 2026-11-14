@@ -28,14 +28,5 @@ export const actions = {
 			await deleteAnnouncement(id);
 		}
 		return { success: true };
-	},
-
-	toggleEnrollment: async ({ request }) => {
-		const formData = await request.formData();
-		const courseId = Number(formData.get('courseId'));
-		if (courseId) {
-			await toggleCourseEnrollment(courseId);
-		}
-		return { success: true };
 	}
 };

@@ -83,6 +83,35 @@ export async function getEnrolledCourses(userId = 1) {
 }
 
 /**
+ * Lists all course modules grouped and sorted by class for a to-do list display
+ * @param {number} [userId=1]
+ */
+export async function getModulesByClass(userId = 1) {
+	const courses = await getCourses(userId);
+
+	return courses
+		.map((course) => {
+			const modules = (course.modules || []).sort((a, b) => (a.order ?? 0) - (b.order ?? 0));
+			const completedCount = modules.filter((m) => m.completed).length;
+			const totalCount = modules.length;
+
+			return {
+				id: course.id,
+				code: course.code,
+				title: course.title,
+				instructor: course.instructor,
+				category: course.category,
+				enrolled: course.enrolled,
+				completedCount,
+				totalCount,
+				progress: totalCount > 0 ? Math.round((completedCount / totalCount) * 100) : 0,
+				modules
+			};
+		})
+		.sort((a, b) => a.code.localeCompare(b.code));
+}
+
+/**
  * Get a single course by ID with its modules, questions, and user status
  * @param {number} courseId
  * @param {number} [userId=1]

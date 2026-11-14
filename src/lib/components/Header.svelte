@@ -12,7 +12,7 @@
 	<div>
 		<a href="/">🏠</a>
 		<a href="/courses">📚</a>
-		<a href="/assignments">📄</a>
+		<a href="/modules">✅</a>
 	</div>
 
 	<AccountPreview {user} />
