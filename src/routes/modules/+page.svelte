@@ -36,9 +36,13 @@
 						</span>
 					</div>
 
-					<div class="mt-2 divide-y divide-neutral-800/40">
+					<div class="mt-3 space-y-2">
 						{#if !classItem.modules || classItem.modules.length === 0}
-							<p class="py-2 text-sm text-neutral-500 italic">No modules</p>
+							<div
+								class="rounded-xl border-2 border-dashed border-neutral-800 p-6 text-center text-sm text-neutral-400"
+							>
+								No modules yet.
+							</div>
 						{:else}
 							{#each classItem.modules as module (module.id)}
 								<ChecklistItem {module} courseId={classItem.id} />

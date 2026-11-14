@@ -1,4 +1,6 @@
 <script>
+	import ChecklistItem from '#lib/components/ChecklistItem.svelte';
+
 	let { data } = $props();
 
 	let course = $derived(data.course);
@@ -63,34 +65,7 @@
 
 					<div class="space-y-2">
 						{#each modules as m (m.id)}
-							<a
-								href="/courses/{course.id}/modules/{m.id}"
-								class="group flex items-center gap-3 rounded-xl border-2 border-neutral-800 bg-neutral-900/50 p-3 transition hover:border-neutral-600 hover:bg-neutral-900"
-							>
-								<!-- Clean checkbox box -->
-								<span
-									class="flex h-5 w-5 shrink-0 items-center justify-center rounded border text-xs {m.completed
-										? 'border-neutral-500 bg-neutral-800 text-neutral-300'
-										: 'border-neutral-700 text-transparent'}"
-								>
-									✓
-								</span>
-
-								<div class="min-w-0 flex-1">
-									<div
-										class="truncate text-sm font-semibold {m.completed
-											? 'text-neutral-500 line-through'
-											: 'text-neutral-200 group-hover:text-white'}"
-									>
-										{m.title}
-									</div>
-									<div class="text-xs text-neutral-400 capitalize">
-										{m.type ?? 'lesson'}{#if m.duration}
-											· {m.duration} min{/if}{#if m.points}
-											· {m.points} pts{/if}
-									</div>
-								</div>
-							</a>
+							<ChecklistItem module={m} courseId={course.id} />
 						{:else}
 							<div
 								class="rounded-xl border-2 border-dashed border-neutral-800 p-8 text-center text-sm text-neutral-400"

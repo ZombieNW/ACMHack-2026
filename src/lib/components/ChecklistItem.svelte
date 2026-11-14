@@ -1,29 +1,34 @@
 <script>
-	import { enhance } from '$app/forms';
-
 	let { module, courseId = module?.courseId } = $props();
+
+	let targetCourseId = $derived(courseId ?? module?.courseId);
 </script>
 
-<div class="flex items-center gap-3 py-2">
-	<form method="POST" action="?/markModuleComplete" use:enhance>
-		<input type="hidden" name="moduleId" value={module.id} />
-		<button
-			type="submit"
-			aria-label={module.completed ? 'Mark incomplete' : 'Mark complete'}
-			class="flex h-5 w-5 items-center justify-center rounded border text-xs transition {module.completed
-				? 'border-neutral-500 bg-neutral-800 text-neutral-300'
-				: 'border-neutral-700 bg-neutral-950 text-transparent hover:border-neutral-500'}"
-		>
-			✓
-		</button>
-	</form>
-
-	<a
-		href="/courses/{courseId ?? module?.courseId}/modules/{module.id}"
-		class="text-sm transition hover:underline {module.completed
-			? 'text-neutral-500 line-through'
-			: 'text-neutral-200 hover:text-white'}"
+<a
+	href="/courses/{targetCourseId}/modules/{module.id}"
+	class="group flex items-center gap-3 rounded-xl border-2 border-neutral-800 bg-neutral-900/50 p-3 transition hover:border-neutral-600 hover:bg-neutral-900"
+>
+	<!-- Clean checkbox box -->
+	<span
+		class="flex h-5 w-5 shrink-0 items-center justify-center rounded border text-xs {module.completed
+			? 'border-neutral-500 bg-neutral-800 text-neutral-300'
+			: 'border-neutral-700 text-transparent'}"
 	>
-		{module.title}
-	</a>
-</div>
+		✓
+	</span>
+
+	<div class="min-w-0 flex-1">
+		<div
+			class="truncate text-sm font-semibold {module.completed
+				? 'text-neutral-500 line-through'
+				: 'text-neutral-200 group-hover:text-white'}"
+		>
+			{module.title}
+		</div>
+		<div class="text-xs text-neutral-400 capitalize">
+			{module.type ?? 'lesson'}{#if module.duration}
+				<span> </span> · {module.duration} min{/if}{#if module.points}
+				<span> </span> · {module.points} pts{/if}
+		</div>
+	</div>
+</a>
