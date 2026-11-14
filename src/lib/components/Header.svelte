@@ -1,17 +1,19 @@
 <script>
-    import AccountPreview from "#lib/components/AccountPreview.svelte";
+	import AccountPreview from '#lib/components/AccountPreview.svelte';
 
-    let { user } = $props();
+	let { user } = $props();
 </script>
 
-<div class="w-full flex bg-neutral-900/50 border-b-2 border-b-neutral-800 justify-between p-4 items-center">
-    <h1>🦆 DuckLearn</h1>
+<div
+	class="flex w-full items-center justify-between border-b-2 border-b-neutral-800 bg-neutral-900/50 p-4"
+>
+	<h1>🦆 DuckLearn</h1>
 
-    <div>
-        <a href="/">🏠</a>
-        <a href="/courses">📚</a>
-        <a href="/assignments">📄</a>
-    </div>
+	<div>
+		<a href="/">🏠</a>
+		<a href="/courses">📚</a>
+		<a href="/assignments">📄</a>
+	</div>
 
-    <AccountPreview {user} />
+	<AccountPreview {user} />
 </div>
