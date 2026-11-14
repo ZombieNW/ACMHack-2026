@@ -2,9 +2,9 @@
 	import './layout.css';
 	import favicon from '#lib/assets/favicon.svg';
 
-	import Header from "#lib/components/Header.svelte"
+	import Header from '#lib/components/Header.svelte';
 
-	let { children } = $props();
+	let { data, children } = $props();
 </script>
 
 <svelte:head>
@@ -12,7 +12,7 @@
 	<title>DuckLearn</title>
 </svelte:head>
 
-<main class="bg-neutral-950 text-neutral-50 min-h-screen">
-    <Header />
-    {@render children()}
+<main class="min-h-screen bg-neutral-950 text-neutral-50">
+	<Header user={data?.user} />
+	{@render children()}
 </main>
