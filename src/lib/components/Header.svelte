@@ -1,5 +1,7 @@
 <script>
     import AccountPreview from "#lib/components/AccountPreview.svelte";
+
+    let { user } = $props();
 </script>
 
 <div class="w-full flex bg-neutral-900/50 border-b-2 border-b-neutral-800 justify-between p-4 items-center">
@@ -11,5 +13,5 @@
         <a href="/assignments">📄</a>
     </div>
 
-    <AccountPreview />
+    <AccountPreview {user} />
 </div>

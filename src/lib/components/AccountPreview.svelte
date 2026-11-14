@@ -1,5 +1,5 @@
 <script>
-    import { user } from "../../routes/placeholder";
+    let { user } = $props();
 </script>
 
 <div class="flex items-center justify-center gap-4">

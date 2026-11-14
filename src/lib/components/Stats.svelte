@@ -1,8 +1,8 @@
 <script>
-  import { initialCourses } from '../../routes/placeholder';
+  let { courses } = $props();
 
   const stats = (() => {
-    const enrolled = initialCourses.filter((c) => c.enrolled);
+    const enrolled = courses.filter((c) => c.enrolled);
 
     let done = 0;
     let remaining = 0;
