@@ -390,6 +390,34 @@ export async function toggleModuleCompletion(moduleId, userId = 1) {
 }
 
 /**
+ * Mark a module as completed for a user (idempotent, does not un-complete)
+ * @param {number} moduleId
+ * @param {number} [userId=1]
+ */
+export async function markModuleCompleted(moduleId, userId = 1) {
+	const modId = Number(moduleId);
+	const uid = Number(userId);
+	if (!modId || isNaN(modId)) return { completed: false };
+
+	const existing = await db.query.userProgress.findFirst({
+		where: and(
+			eq(schema.userProgress.userId, uid),
+			eq(schema.userProgress.moduleId, modId)
+		)
+	});
+
+	if (!existing) {
+		await db.insert(schema.userProgress).values({
+			userId: uid,
+			moduleId: modId,
+			completed: true,
+			completedAt: new Date()
+		});
+	}
+	return { completed: true };
+}
+
+/**
  * Delete an announcement by ID
  * @param {number} id
  */
