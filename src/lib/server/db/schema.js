@@ -5,8 +5,7 @@ import { relations } from 'drizzle-orm';
 export const users = sqliteTable('users', {
 	id: integer('id').primaryKey({ autoIncrement: true }),
 	name: text('name').notNull(),
-	email: text('email'),
-	profileImage: text('profile_image')
+	email: text('email')
 });
 
 // Courses

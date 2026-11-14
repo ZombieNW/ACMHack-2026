@@ -1,1 +1,2 @@
-// place files you want to import through the `#lib` alias in this folder.
+export { default as AccountCircle } from './components/AccountCircle.svelte';
+export { default as AccountPreview } from './components/AccountPreview.svelte';

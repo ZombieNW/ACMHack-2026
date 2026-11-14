@@ -10,8 +10,7 @@ export function getDb(dbPath = process.env.DATABASE_URL || 'local.db') {
 const initialUser = {
 	id: 1,
 	name: 'Jordan Baker',
-	email: 'jordan.baker@ducklearn.edu',
-	profileImage: 'https://creativepro.com/wp-content/uploads/2023/07/Shawn-Jordison-300x340-1.jpg'
+	email: 'jordan.baker@ducklearn.edu'
 };
 
 const initialCourses = [
