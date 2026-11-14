@@ -2,6 +2,8 @@
 	import ChecklistItem from '#lib/components/ChecklistItem.svelte';
 
 	let { data } = $props();
+
+	let enrolledClasses = $derived(data?.modulesByClass || []);
 </script>
 
 <svelte:head>
@@ -10,7 +12,7 @@
 
 <main class="p-4">
 	<!-- Header -->
-	<div class="flex gap-4">
+	<div class="flex items-center gap-4">
 		<a
 			href="/"
 			class="inline-block rounded-lg border-2 border-neutral-800 bg-neutral-900/50 px-3 py-1 text-sm text-neutral-300 transition hover:border-neutral-600 hover:text-white"
@@ -23,34 +25,79 @@
 	<!-- Main Content -->
 	<div class="mx-auto max-w-3xl">
 		<div class="mt-6 space-y-8">
-			{#each data?.modulesByClass || [] as classItem (classItem.id)}
-				<div>
-					<div
-						class="flex items-baseline justify-between border-b border-neutral-800 pb-2"
+			{#if enrolledClasses.length === 0}
+				<div
+					class="rounded-2xl border-2 border-dashed border-neutral-800 bg-neutral-900/40 p-8 text-center"
+				>
+					<div class="mb-2 text-4xl select-none">🦆</div>
+					<h2 class="text-lg font-bold text-neutral-100">No Enrolled Classes</h2>
+					<p class="mt-1 text-sm text-neutral-400">
+						You are not currently enrolled in any classes. Browse available courses to
+						start tracking assignments!
+					</p>
+					<a
+						href="/courses"
+						class="mt-4 inline-flex items-center gap-1.5 rounded-xl border border-yellow-500/50 bg-yellow-500/20 px-4 py-2 text-xs font-semibold text-yellow-200 transition hover:bg-yellow-500/30"
 					>
-						<h2 class="text-lg font-semibold text-neutral-100">
-							{classItem.code}: {classItem.title}
-						</h2>
-						<span class="text-xs text-neutral-400">
-							{classItem.completedCount}/{classItem.totalCount}
-						</span>
-					</div>
-
-					<div class="mt-3 space-y-2">
-						{#if !classItem.modules || classItem.modules.length === 0}
-							<div
-								class="rounded-xl border-2 border-dashed border-neutral-800 p-6 text-center text-sm text-neutral-400"
-							>
-								No modules yet.
-							</div>
-						{:else}
-							{#each classItem.modules as module (module.id)}
-								<ChecklistItem {module} courseId={classItem.id} />
-							{/each}
-						{/if}
-					</div>
+						<span>📚</span> Explore Courses
+					</a>
 				</div>
-			{/each}
+			{:else}
+				{#each enrolledClasses as classItem (classItem.id)}
+					<div class="space-y-3">
+						<!-- Image preview in a rounded-xl bubble full-width slice above the class name -->
+						{#if classItem.image}
+							<div
+								class="group relative h-16 w-full overflow-hidden rounded-xl border-2 border-neutral-800 bg-neutral-900 shadow-md"
+							>
+								<img
+									src={classItem.image}
+									alt={classItem.title}
+									class="h-full w-full object-cover object-center transition duration-300 group-hover:scale-105"
+								/>
+								<div
+									class="absolute inset-0 bg-linear-to-r from-neutral-950/80 via-neutral-950/30 to-transparent"
+								></div>
+								<span
+									class="absolute bottom-2.5 left-3 rounded-md border border-neutral-700/80 bg-neutral-950/80 px-2 py-0.5 text-xs font-semibold text-neutral-200 backdrop-blur-xs"
+								>
+									{classItem.code}
+								</span>
+							</div>
+						{/if}
+
+						<div
+							class="flex items-baseline justify-between border-b border-neutral-800 pb-2"
+						>
+							<h2 class="text-lg font-semibold text-neutral-100">
+								<a
+									href="/courses/{classItem.id}"
+									class="transition hover:text-yellow-300 hover:underline"
+								>
+									{classItem.code}: {classItem.title}
+								</a>
+							</h2>
+							<span class="text-xs text-neutral-400">
+								{classItem.completedCount}/{classItem.totalCount} completed
+							</span>
+						</div>
+
+						<div class="space-y-2">
+							{#if !classItem.modules || classItem.modules.length === 0}
+								<div
+									class="rounded-xl border-2 border-dashed border-neutral-800 p-6 text-center text-sm text-neutral-400"
+								>
+									No modules yet.
+								</div>
+							{:else}
+								{#each classItem.modules as module (module.id)}
+									<ChecklistItem {module} courseId={classItem.id} />
+								{/each}
+							{/if}
+						</div>
+					</div>
+				{/each}
+			{/if}
 		</div>
 	</div>
 </main>

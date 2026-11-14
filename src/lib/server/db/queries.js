@@ -145,6 +145,7 @@ export async function getModulesByClass(userId = 1) {
 				title: course.title,
 				instructor: course.instructor,
 				category: course.category,
+				image: course.image,
 				enrolled: course.enrolled,
 				completedCount,
 				totalCount,

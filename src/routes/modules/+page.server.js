@@ -3,10 +3,11 @@ import { getModulesByClass, toggleModuleCompletion } from '#lib/server/db/index.
 export async function load({ locals }) {
 	const userId = locals.user?.id ?? 1;
 
-	const modulesByClass = await getModulesByClass(userId);
+	const allModulesByClass = await getModulesByClass(userId);
+	const enrolledModulesByClass = allModulesByClass.filter((c) => c.enrolled);
 
-	// Flat list of all modules with course info attached, sorted by class and module order
-	const allModules = modulesByClass.flatMap((course) =>
+	// Flat list of all modules for enrolled courses
+	const allModules = enrolledModulesByClass.flatMap((course) =>
 		course.modules.map((m) => ({
 			...m,
 			course: {
@@ -15,13 +16,14 @@ export async function load({ locals }) {
 				title: course.title,
 				instructor: course.instructor,
 				category: course.category,
+				image: course.image,
 				enrolled: course.enrolled
 			}
 		}))
 	);
 
 	return {
-		modulesByClass,
+		modulesByClass: enrolledModulesByClass,
 		modules: allModules
 	};
 }
