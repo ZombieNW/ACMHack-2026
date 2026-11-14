@@ -41,30 +41,7 @@
 	}
 </script>
 
-<main class="space-y-4 p-4">
-    <!-- Announcements (small, top of page) -->
-	{#if announcements.length}
-		<section class="space-y-1">
-			{#each announcements as a, i (a.id ?? i)}
-				<div class="flex items-center justify-between gap-3 text-sm text-neutral-300">
-					<span class="min-w-0">{a.content ?? a}</span>
-					{#if a.id != null}
-						<form method="POST" action="?/deleteAnnouncement" use:enhance>
-							<input type="hidden" name="id" value={a.id} />
-							<button
-								type="submit"
-								aria-label="Dismiss announcement"
-								class="text-xs transition hover:scale-110 hover:cursor-pointer"
-							>
-								✖️
-							</button>
-						</form>
-					{/if}
-				</div>
-			{/each}
-		</section>
-	{/if}
-
+<main class="space-y-6 p-4">
 	<!-- Welcome + stats -->
 	<section
 		class="flex flex-col gap-6 rounded-2xl border-2 border-neutral-800 bg-neutral-900/50 p-6 md:flex-row md:items-center md:justify-between md:p-8"
@@ -89,20 +66,21 @@
 	</section>
 
 	<div class="grid gap-6 lg:grid-cols-[1fr_300px]">
-		<!-- Main column -->
+		<!-- Classes (left) -->
 		<div class="min-w-0">
 			<Classes courses={data?.courses} />
 		</div>
 
-		<!-- To-do (right) -->
+		<!-- To-do + announcements (right) -->
 		<aside class="lg:sticky lg:top-4 lg:self-start">
-			<div class="rounded-xl border-2 border-neutral-800 bg-neutral-900/50 p-4">
-				<h2 class="text-xl">To-Do</h2>
+			<!-- To-do -->
+			<h2 class="text-2xl">To-Do</h2>
 
-				<ul class="mt-3 divide-y divide-neutral-800/60">
+			<div class="mt-2 rounded-xl border-2 border-neutral-800 bg-neutral-900/50 p-4">
+				<ul class="divide-y divide-neutral-800/60">
 					{#each todos as todo (todo.id)}
 						{@const due = dueInfo(todo.dueDate)}
-						<li class="flex items-start gap-3 py-2">
+						<li class="flex items-start gap-3 py-2 first:pt-0">
 							<form method="POST" action="?/markModuleComplete" use:enhance class="pt-0.5">
 								<input type="hidden" name="moduleId" value={todo.id} />
 								<button
@@ -148,6 +126,35 @@
 					</a>
 				{/if}
 			</div>
+
+			<!-- Announcements -->
+			{#if announcements.length}
+				<h2 class="mt-6 text-2xl">Announcements</h2>
+
+				<div class="mt-2 rounded-xl border-2 border-neutral-800 bg-neutral-900/50 p-4">
+					<ul class="divide-y divide-neutral-800/60">
+						{#each announcements as a, i (a.id ?? i)}
+							<li
+								class="flex items-center justify-between gap-3 py-2 text-sm text-neutral-300 first:pt-0 last:pb-0"
+							>
+								<span class="min-w-0">{a.content ?? a}</span>
+								{#if a.id != null}
+									<form method="POST" action="?/deleteAnnouncement" use:enhance>
+										<input type="hidden" name="id" value={a.id} />
+										<button
+											type="submit"
+											aria-label="Dismiss announcement"
+											class="text-xs transition hover:scale-110 hover:cursor-pointer"
+										>
+											✖️
+										</button>
+									</form>
+								{/if}
+							</li>
+						{/each}
+					</ul>
+				</div>
+			{/if}
 		</aside>
 	</div>
 </main>
