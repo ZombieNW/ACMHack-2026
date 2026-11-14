@@ -7,7 +7,7 @@
 
     <div>
         <a href="/">🏠</a>
-        <a href="/catalog">📚</a>
+        <a href="/courses">📚</a>
         <a href="/assignments">📄</a>
     </div>
 
