@@ -13,11 +13,18 @@
 	let categories = $derived(['All', ...new Set(courses.map((c) => c.category))]);
 
 	let visible = $derived(
-		courses.filter(
-			(c) =>
-				(category === 'All' || c.category === category) &&
-				c.title.toLowerCase().includes(search.toLowerCase())
-		)
+		courses
+			.filter(
+				(c) =>
+					(category === 'All' || c.category === category) &&
+					c.title.toLowerCase().includes(search.toLowerCase())
+			)
+			.sort((a, b) => {
+				if (Boolean(a.enrolled) === Boolean(b.enrolled)) {
+					return (a.code || '').localeCompare(b.code || '');
+				}
+				return a.enrolled ? -1 : 1;
+			})
 	);
 
 	let dialog;
@@ -45,7 +52,7 @@
 	<div class="flex gap-4">
 		<a
 			href="/"
-			class="inline-block rounded-lg border-2 border-neutral-800 px-3 py-1 text-sm text-neutral-300 transition hover:border-neutral-600 hover:text-white"
+			class="inline-block rounded-lg border-2 border-neutral-800 bg-neutral-900/50 px-3 py-1 text-sm text-neutral-300 transition hover:border-neutral-600 hover:text-white"
 		>
 			← Back
 		</a>
