@@ -1,31 +1,5 @@
 <script>
-	let { courses } = $props();
-
-	const stats = (() => {
-		const enrolled = courses.filter((c) => c.enrolled);
-
-		let done = 0;
-		let remaining = 0;
-		let minutes = 0;
-
-		for (const c of enrolled) {
-			for (const l of c.lessons) {
-				if (l.completed) {
-					done++;
-				} else {
-					remaining++;
-					minutes += l.duration;
-				}
-			}
-		}
-
-		return [
-			{ label: 'Classes Enrolled', value: enrolled.length },
-			{ label: 'Assignments Completed', value: done },
-			{ label: 'Assignments Remaining', value: remaining },
-			{ label: 'Est. Time Remaining', value: minutes }
-		];
-	})();
+	let { stats } = $props();
 </script>
 
 <h1 class="text-2xl">Statistics</h1>
