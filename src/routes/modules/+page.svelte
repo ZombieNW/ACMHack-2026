@@ -45,7 +45,7 @@
 								</form>
 
 								<a
-									href="/class/{classItem.id}/modules/{module.id}"
+									href="/courses/{classItem.id}/modules/{module.id}"
 									class="text-sm transition hover:underline {module.completed
 										? 'text-neutral-500 line-through'
 										: 'text-neutral-200 hover:text-white'}"

@@ -163,6 +163,92 @@ export async function getCourseById(courseId, userId = 1) {
 }
 
 /**
+ * Get a single module by ID and optionally course ID, enriched with course details,
+ * quiz questions (if type is quiz), user completion status, and previous/next navigation
+ * @param {number|string} moduleId
+ * @param {number|string|object} [userIdOrOptions=1]
+ * @param {number|string} [courseId=null]
+ */
+export async function getModuleById(moduleId, userIdOrOptions = 1, courseId = null) {
+	let userId = 1;
+	let targetCourseId = courseId;
+
+	if (typeof userIdOrOptions === 'object' && userIdOrOptions !== null) {
+		userId = userIdOrOptions.userId ?? 1;
+		targetCourseId = userIdOrOptions.courseId ?? courseId;
+	} else if (typeof userIdOrOptions === 'number' || typeof userIdOrOptions === 'string') {
+		userId = Number(userIdOrOptions);
+		targetCourseId = courseId !== null && courseId !== undefined ? Number(courseId) : null;
+	}
+
+	const modId = Number(moduleId);
+	if (!modId || isNaN(modId)) return null;
+
+	const conditions = [eq(schema.modules.id, modId)];
+	if (targetCourseId !== null && targetCourseId !== undefined && !isNaN(Number(targetCourseId))) {
+		conditions.push(eq(schema.modules.courseId, Number(targetCourseId)));
+	}
+
+	const mod = await db.query.modules.findFirst({
+		where: and(...conditions),
+		with: {
+			course: true,
+			quizQuestions: {
+				orderBy: [asc(schema.quizQuestions.order)]
+			}
+		}
+	});
+
+	if (!mod) return null;
+
+	// Check user completion and course enrollment
+	const [userProgress, enrollment] = await Promise.all([
+		db.query.userProgress.findFirst({
+			where: and(
+				eq(schema.userProgress.userId, userId),
+				eq(schema.userProgress.moduleId, modId),
+				eq(schema.userProgress.completed, true)
+			)
+		}),
+		db.query.enrollments.findFirst({
+			where: and(
+				eq(schema.enrollments.userId, userId),
+				eq(schema.enrollments.courseId, mod.courseId)
+			)
+		})
+	]);
+
+	// Sibling modules for prev/next navigation
+	const siblings = await db.query.modules.findMany({
+		where: eq(schema.modules.courseId, mod.courseId),
+		orderBy: [asc(schema.modules.order)]
+	});
+
+	const currentIndex = siblings.findIndex((s) => s.id === mod.id);
+	const prevModule = currentIndex > 0 ? siblings[currentIndex - 1] : null;
+	const nextModule =
+		currentIndex >= 0 && currentIndex < siblings.length - 1 ? siblings[currentIndex + 1] : null;
+
+	const parsedQuestions = (mod.quizQuestions || []).map((q) => ({
+		...q,
+		options: typeof q.options === 'string' ? JSON.parse(q.options) : q.options
+	}));
+
+	return {
+		...mod,
+		quizQuestions: parsedQuestions,
+		completed: !!userProgress,
+		enrolled: !!enrollment,
+		prevModule: prevModule
+			? { id: prevModule.id, title: prevModule.title, type: prevModule.type }
+			: null,
+		nextModule: nextModule
+			? { id: nextModule.id, title: nextModule.title, type: nextModule.type }
+			: null
+	};
+}
+
+/**
  * Get calculated statistics for the home page for a specific user
  * @param {number} [userId=1]
  */
@@ -301,6 +387,31 @@ export async function toggleModuleCompletion(moduleId, userId = 1) {
 		});
 		return { completed: true };
 	}
+}
+
+/**
+ * Mark a module as completed for a user (idempotent, does not un-complete)
+ * @param {number} moduleId
+ * @param {number} [userId=1]
+ */
+export async function markModuleCompleted(moduleId, userId = 1) {
+	const modId = Number(moduleId);
+	const uid = Number(userId);
+	if (!modId || isNaN(modId)) return { completed: false };
+
+	const existing = await db.query.userProgress.findFirst({
+		where: and(eq(schema.userProgress.userId, uid), eq(schema.userProgress.moduleId, modId))
+	});
+
+	if (!existing) {
+		await db.insert(schema.userProgress).values({
+			userId: uid,
+			moduleId: modId,
+			completed: true,
+			completedAt: new Date()
+		});
+	}
+	return { completed: true };
 }
 
 /**
