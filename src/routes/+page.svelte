@@ -9,6 +9,6 @@
 
 <main class="space-y-6 p-4">
 	<Announcements announcements={data?.announcements} />
-	<Stats courses={data?.courses} />
+	<Stats courses={data?.stats} />
 	<Classes courses={data?.courses} />
 </main>
