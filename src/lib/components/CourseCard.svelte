@@ -27,13 +27,9 @@
 >
 	<!-- Image Header with Code Badge -->
 	<div class="relative aspect-2/1 w-full overflow-hidden bg-neutral-800">
-		<img
-			src={course.image}
-			alt={course.title}
-			class="h-full w-full object-cover transition duration-300 group-hover:scale-105"
-		/>
+		<img src={course.image} alt={course.title} class="h-full w-full object-cover" />
 		<span
-			class="absolute top-3 left-3 rounded-md border border-neutral-700/80 bg-neutral-950/80 px-2 py-0.5 text-xs font-medium tracking-wide text-neutral-300 backdrop-blur-sm"
+			class="absolute top-3 left-3 rounded-md border border-neutral-700 bg-neutral-950/80 px-2 py-0.5 text-xs font-medium tracking-wide text-neutral-300"
 		>
 			{course.code}
 		</span>
@@ -64,7 +60,7 @@
 
 		<!-- Bottom Section: Progress Bar or Enrollment Button -->
 		{#if hasEnrollButton}
-			<div class="flex items-center justify-between border-t border-neutral-800/60 pt-3">
+			<div class="flex items-center justify-between border-t border-neutral-800 pt-3">
 				{#if course.startDate}
 					<span class="text-xs text-neutral-400">{formatDate(course.startDate)}</span>
 				{:else}
@@ -92,7 +88,7 @@
 				</div>
 				<div class="h-1.5 w-full overflow-hidden rounded-full bg-neutral-800">
 					<div
-						class="h-full rounded-full bg-neutral-200 transition-all duration-300"
+						class="h-full rounded-full bg-neutral-200"
 						style="width: {getProgress(course)}%"
 					></div>
 				</div>

@@ -49,14 +49,14 @@
 <!-- Main Page -->
 <main class="space-y-4 p-4">
 	<!-- Header -->
-	<div class="flex gap-4">
+	<div class="flex items-center gap-4">
 		<a
 			href="/"
 			class="inline-block rounded-lg border-2 border-neutral-800 bg-neutral-900/50 px-3 py-1 text-sm text-neutral-300 transition hover:border-neutral-600 hover:text-white"
 		>
 			← Back
 		</a>
-		<h1 class="text-2xl">Courses</h1>
+		<h1 class="text-2xl font-bold">Courses</h1>
 	</div>
 
 	<!-- Search Box -->

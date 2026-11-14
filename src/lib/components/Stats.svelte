@@ -2,7 +2,7 @@
 	let { stats } = $props();
 </script>
 
-<h1 class="text-2xl">Statistics</h1>
+<h1 class="text-2xl font-bold">Statistics</h1>
 
 <div class="my-2 grid grid-cols-2 gap-3">
 	{#each stats as stat (stat.label)}

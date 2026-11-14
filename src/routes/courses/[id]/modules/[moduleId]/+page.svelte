@@ -12,7 +12,7 @@
 	<title>{module?.title ?? 'Module'} - DuckLearn</title>
 </svelte:head>
 
-<main class="p-4">
+<main class="space-y-4 p-4">
 	<!-- Back Button -->
 	<a
 		href="/courses/{module.courseId}"
@@ -24,16 +24,18 @@
 	<!-- Main Content -->
 	<div class="mx-auto max-w-3xl">
 		<!-- Header -->
-		<div class="mt-4 border-b border-neutral-800 pb-4">
-			<div class="flex items-baseline justify-between">
+		<div class="border-b border-neutral-800 pb-4">
+			<div class="flex items-baseline justify-between gap-4">
 				<h1 class="text-2xl font-bold text-neutral-100">{module.title}</h1>
-				{#if module.completed}<span class="text-neutral-300">✓ Completed</span>{/if}
+				{#if module.completed}
+					<span class="text-xs font-medium text-neutral-400">✓ Completed</span>
+				{/if}
 			</div>
-			<div class="mt-1 flex items-baseline justify-between text-neutral-400">
+			<div class="mt-1 flex items-baseline justify-between text-xs text-neutral-400">
 				<p class="capitalize">
-					{module.type}
-					{#if module.duration}· {module.duration} min{/if}
-					{#if module.points}· {module.points} pts{/if}
+					{module.type}{#if module.duration}
+						· {module.duration} min{/if}{#if module.points}
+						· {module.points} pts{/if}
 				</p>
 				{#if quizScore}
 					<span
@@ -55,9 +57,7 @@
 		{/if}
 
 		<!-- Navigation -->
-		<div
-			class="mt-12 flex items-center justify-between border-t border-neutral-800 pt-4 text-sm"
-		>
+		<div class="mt-12 flex items-center justify-between border-t border-neutral-800 pt-4">
 			{#if module.prevModule}
 				<a
 					href="/courses/{module.courseId}/modules/{module.prevModule.id}"
