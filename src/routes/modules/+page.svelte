@@ -17,7 +17,7 @@
 		>
 			← Back
 		</a>
-		<h1 class="text-2xl">Modules</h1>
+		<h1 class="text-2xl font-bold">Modules</h1>
 	</div>
 
 	<!-- Main Content -->
