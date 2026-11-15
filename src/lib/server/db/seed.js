@@ -1375,7 +1375,7 @@ Raw accuracy is notoriously deceptive for imbalanced datasets (e.g., fraud detec
 	}
 ];
 
-export const announcements = [
+export const initialAnnouncements = [
 	'📢 System maintenance scheduled — check back later',
 	'🎉 New courses added this month!',
 	'⚠️ Reminder: complete your profile',
