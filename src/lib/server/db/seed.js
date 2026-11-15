@@ -1375,11 +1375,12 @@ Raw accuracy is notoriously deceptive for imbalanced datasets (e.g., fraud detec
 	}
 ];
 
-const initialAnnouncements = [
-	'🦆 Welcome to DuckLearn! Explore newly updated Computer Science, Data Science, and Design classes.',
-	'🎉 Interactive knowledge quizzes are now live across all enrolled courses — earn points and track mastery!',
-	'📅 Dr. Okafor virtual office hours are scheduled for this Thursday at 3:00 PM EST in the CS room.',
-	'🏆 Complete all modules in an active course track to unlock your verified course completion badge.'
+export const announcements = [
+	'📢 System maintenance scheduled — check back later',
+	'🎉 New courses added this month!',
+	'⚠️ Reminder: complete your profile',
+	'🔥 Limited-time: 3 new badges available',
+	'📅 Office hours moved'
 ];
 
 export async function seed(client, db, options = {}) {
