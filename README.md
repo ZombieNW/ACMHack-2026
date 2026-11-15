@@ -1,56 +1,22 @@
-# sv
+# DuckLearn
 
-Everything you need to build a Svelte project, powered by [`sv`](https://github.com/sveltejs/cli).
+_A Hackathon Learning Management System_
 
-## Creating a project
+![Languages](https://badgen.net/badge/language/Svelte/red) ![Platform](https://badgen.net/badge/platform/Node.JS/green) ![License](https://badgen.net/badge/license/MIT/red)
 
-If you're seeing this, you've probably already done this step. Congrats!
+## About
 
-```sh
-# create a new project
-npx sv create my-app
-```
+This project was made by @zombienw & @kirrahlol & @Christian01123 in 8 hours during the ACM Student Chapter @ Northern Arizona University 2026 Hackathon!
 
-To recreate this project with the same configuration:
-
-```sh
-# recreate this project
-npx sv@1.3.0 create --template minimal --no-types --add prettier tailwindcss="plugins:none" drizzle="database:sqlite+sqlite:better-sqlite3" --install npm ./
-```
-
-## Adding features
-
-Add features to your project with `sv add`:
-
-```sh
-npx sv add
-```
-
-For example, to add Tailwind CSS:
-
-```sh
-npx sv add tailwindcss
-```
+DuckLearn is a user-friendly learning management system with a linear class structure. All modules are either markdown-based "lessons" or multiple choice "quiz" modules.
 
 ## Developing
 
-Once you've created a project and installed dependencies with `npm install` (or `pnpm install` or `yarn`), start a development server:
-
 ```sh
+npm install
 npm run dev
-
-# or start the server and open the app in a new browser tab
-npm run dev -- --open
 ```
-
-## Building
-
-To create a production version of your app:
 
 ```sh
 npm run build
 ```
-
-You can preview the production build with `npm run preview`.
-
-> To deploy your app, you may need to install an [adapter](https://svelte.dev/docs/kit/adapters) for your target environment.
