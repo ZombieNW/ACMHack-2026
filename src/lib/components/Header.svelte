@@ -64,6 +64,28 @@
 					<span>✅</span>
 					<span class="hidden sm:inline">Modules</span>
 				</a>
+				{#if user.isAdmin}
+					<a
+						href="/admin"
+						aria-label="Admin"
+						class="flex items-center gap-1.5 rounded-lg border px-2.5 py-1 text-sm font-medium transition sm:px-3 {isActive(
+							'/admin'
+						)
+							? 'border-amber-500/50 bg-amber-500/10 font-semibold text-amber-200'
+							: 'border-transparent text-neutral-400 hover:border-neutral-800 hover:bg-neutral-900/50 hover:text-neutral-200'}"
+					>
+						<svg
+							class="h-4 w-4 text-amber-400"
+							fill="none"
+							viewBox="0 0 24 24"
+							stroke="currentColor"
+							stroke-width="2"
+						>
+							<path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z" />
+						</svg>
+						<span class="hidden sm:inline">Admin</span>
+					</a>
+				{/if}
 			</nav>
 		{/if}
 

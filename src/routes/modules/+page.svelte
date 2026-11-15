@@ -47,6 +47,9 @@
 									src={classItem.image}
 									alt={classItem.title}
 									class="h-full w-full object-cover object-center transition duration-300 group-hover:scale-105"
+									onerror={(e) => {
+										e.currentTarget.src = '/images/courses/duck-1.jpg';
+									}}
 								/>
 								<div
 									class="absolute inset-0 bg-linear-to-r from-neutral-950/80 via-neutral-950/30 to-transparent"

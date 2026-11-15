@@ -27,7 +27,7 @@ export const courses = sqliteTable('courses', {
 	instructor: text('instructor').notNull(),
 	category: text('category').notNull(),
 	startDate: integer('start_date', { mode: 'timestamp_ms' }),
-	image: text('image').notNull().default('https://placehold.co/400x200'),
+	image: text('image').notNull().default('/images/courses/duck-1.jpg'),
 	description: text('description')
 });
 

@@ -32,7 +32,14 @@
 			<div
 				class="relative aspect-2/1 w-full overflow-hidden rounded-xl border-2 border-neutral-800 bg-neutral-900 sm:aspect-3/1"
 			>
-				<img src={course.image} alt={course.title} class="h-full w-full object-cover" />
+				<img
+					src={course.image}
+					alt={course.title}
+					class="h-full w-full object-cover"
+					onerror={(e) => {
+						e.currentTarget.src = '/images/courses/duck-1.jpg';
+					}}
+				/>
 				<span class="badge-tag absolute top-3 left-3">
 					{course.code}
 				</span>

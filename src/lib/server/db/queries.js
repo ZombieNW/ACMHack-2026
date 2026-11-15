@@ -522,3 +522,355 @@ export async function deleteAnnouncement(id) {
 
 	return deleted[0];
 }
+
+/**
+ * Admin: Get all courses with modules, quiz questions, and enrollment counts
+ */
+export async function getAllCoursesDetailed() {
+	const allCourses = await db.query.courses.findMany({
+		with: {
+			modules: {
+				orderBy: [asc(schema.modules.order)],
+				with: {
+					quizQuestions: {
+						orderBy: [asc(schema.quizQuestions.order)]
+					}
+				}
+			},
+			enrollments: {
+				with: {
+					user: {
+						columns: {
+							id: true,
+							name: true,
+							email: true
+						}
+					}
+				}
+			}
+		},
+		orderBy: [asc(schema.courses.id)]
+	});
+
+	return allCourses.map((c) => {
+		const parsedModules = (c.modules || []).map((m) => ({
+			...m,
+			quizQuestions: (m.quizQuestions || []).map((q) => ({
+				...q,
+				options: typeof q.options === 'string' ? JSON.parse(q.options) : q.options
+			}))
+		}));
+
+		return {
+			...c,
+			moduleCount: parsedModules.length,
+			enrollmentCount: c.enrollments?.length ?? 0,
+			readingCount: parsedModules.filter((m) => m.type === 'reading').length,
+			quizCount: parsedModules.filter((m) => m.type === 'quiz').length,
+			modules: parsedModules
+		};
+	});
+}
+
+/**
+ * Admin: Create a course
+ * @param {{ code: string, title: string, instructor: string, category: string, startDate?: Date|number, image?: string, description?: string }} data
+ */
+export async function createCourse(data) {
+	const [created] = await db
+		.insert(schema.courses)
+		.values({
+			code: data.code.trim().toUpperCase(),
+			title: data.title.trim(),
+			instructor: data.instructor.trim(),
+			category: data.category.trim(),
+			startDate: data.startDate ? new Date(data.startDate) : new Date(),
+			image: data.image?.trim() || '/images/courses/duck-1.jpg',
+			description: data.description?.trim() || ''
+		})
+		.returning();
+
+	return created;
+}
+
+/**
+ * Admin: Update a course
+ * @param {number} id
+ * @param {{ code?: string, title?: string, instructor?: string, category?: string, startDate?: Date|number, image?: string, description?: string }} data
+ */
+export async function updateCourse(id, data) {
+	const courseId = Number(id);
+	const valuesToUpdate = {};
+	if (data.code !== undefined) valuesToUpdate.code = data.code.trim().toUpperCase();
+	if (data.title !== undefined) valuesToUpdate.title = data.title.trim();
+	if (data.instructor !== undefined) valuesToUpdate.instructor = data.instructor.trim();
+	if (data.category !== undefined) valuesToUpdate.category = data.category.trim();
+	if (data.startDate !== undefined)
+		valuesToUpdate.startDate = data.startDate ? new Date(data.startDate) : null;
+	if (data.image !== undefined)
+		valuesToUpdate.image = data.image.trim() || '/images/courses/duck-1.jpg';
+	if (data.description !== undefined) valuesToUpdate.description = data.description.trim();
+
+	const [updated] = await db
+		.update(schema.courses)
+		.set(valuesToUpdate)
+		.where(eq(schema.courses.id, courseId))
+		.returning();
+
+	return updated;
+}
+
+/**
+ * Admin: Delete a course by ID
+ * @param {number} id
+ */
+export async function deleteCourse(id) {
+	const courseId = Number(id);
+	const [deleted] = await db
+		.delete(schema.courses)
+		.where(eq(schema.courses.id, courseId))
+		.returning();
+
+	return deleted;
+}
+
+/**
+ * Admin: Create a module in a course
+ * @param {{ courseId: number, title: string, type?: 'reading'|'quiz', content?: string, duration?: number, points?: number, dueDate?: Date|number, order?: number }} data
+ */
+export async function createModule(data) {
+	const courseId = Number(data.courseId);
+	let order = Number(data.order);
+	if (!order || isNaN(order)) {
+		const existing = await db.query.modules.findMany({
+			where: eq(schema.modules.courseId, courseId),
+			orderBy: [desc(schema.modules.order)],
+			limit: 1
+		});
+		order = existing.length > 0 ? (existing[0].order || 0) + 1 : 1;
+	}
+
+	const [created] = await db
+		.insert(schema.modules)
+		.values({
+			courseId,
+			title: data.title.trim(),
+			type: data.type === 'quiz' ? 'quiz' : 'reading',
+			content: data.content ?? '',
+			duration: Number(data.duration) || 0,
+			points: Number(data.points) || 100,
+			dueDate: data.dueDate ? new Date(data.dueDate) : null,
+			order
+		})
+		.returning();
+
+	return created;
+}
+
+/**
+ * Admin: Update a module
+ * @param {number} id
+ * @param {{ title?: string, type?: 'reading'|'quiz', content?: string, duration?: number, points?: number, dueDate?: Date|number, order?: number }} data
+ */
+export async function updateModule(id, data) {
+	const moduleId = Number(id);
+	const valuesToUpdate = {};
+	if (data.title !== undefined) valuesToUpdate.title = data.title.trim();
+	if (data.type !== undefined) valuesToUpdate.type = data.type === 'quiz' ? 'quiz' : 'reading';
+	if (data.content !== undefined) valuesToUpdate.content = data.content;
+	if (data.duration !== undefined) valuesToUpdate.duration = Number(data.duration) || 0;
+	if (data.points !== undefined) valuesToUpdate.points = Number(data.points) || 0;
+	if (data.dueDate !== undefined)
+		valuesToUpdate.dueDate = data.dueDate ? new Date(data.dueDate) : null;
+	if (data.order !== undefined) valuesToUpdate.order = Number(data.order) || 1;
+
+	const [updated] = await db
+		.update(schema.modules)
+		.set(valuesToUpdate)
+		.where(eq(schema.modules.id, moduleId))
+		.returning();
+
+	return updated;
+}
+
+/**
+ * Admin: Delete a module by ID
+ * @param {number} id
+ */
+export async function deleteModule(id) {
+	const moduleId = Number(id);
+	const [deleted] = await db
+		.delete(schema.modules)
+		.where(eq(schema.modules.id, moduleId))
+		.returning();
+
+	return deleted;
+}
+
+/**
+ * Admin: Create a quiz question
+ * @param {{ moduleId: number, question: string, options: string[]|string, answer: number, order?: number }} data
+ */
+export async function createQuizQuestion(data) {
+	const moduleId = Number(data.moduleId);
+	let order = Number(data.order);
+	if (!order || isNaN(order)) {
+		const existing = await db.query.quizQuestions.findMany({
+			where: eq(schema.quizQuestions.moduleId, moduleId),
+			orderBy: [desc(schema.quizQuestions.order)],
+			limit: 1
+		});
+		order = existing.length > 0 ? (existing[0].order || 0) + 1 : 1;
+	}
+
+	const options = Array.isArray(data.options)
+		? data.options
+		: typeof data.options === 'string'
+			? JSON.parse(data.options)
+			: [];
+
+	const [created] = await db
+		.insert(schema.quizQuestions)
+		.values({
+			moduleId,
+			question: data.question.trim(),
+			options,
+			answer: Number(data.answer) || 0,
+			order
+		})
+		.returning();
+
+	return created;
+}
+
+/**
+ * Admin: Update a quiz question
+ * @param {number} id
+ * @param {{ question?: string, options?: string[]|string, answer?: number, order?: number }} data
+ */
+export async function updateQuizQuestion(id, data) {
+	const questionId = Number(id);
+	const valuesToUpdate = {};
+	if (data.question !== undefined) valuesToUpdate.question = data.question.trim();
+	if (data.options !== undefined) {
+		valuesToUpdate.options = Array.isArray(data.options)
+			? data.options
+			: typeof data.options === 'string'
+				? JSON.parse(data.options)
+				: [];
+	}
+	if (data.answer !== undefined) valuesToUpdate.answer = Number(data.answer) || 0;
+	if (data.order !== undefined) valuesToUpdate.order = Number(data.order) || 1;
+
+	const [updated] = await db
+		.update(schema.quizQuestions)
+		.set(valuesToUpdate)
+		.where(eq(schema.quizQuestions.id, questionId))
+		.returning();
+
+	return updated;
+}
+
+/**
+ * Admin: Delete a quiz question
+ * @param {number} id
+ */
+export async function deleteQuizQuestion(id) {
+	const questionId = Number(id);
+	const [deleted] = await db
+		.delete(schema.quizQuestions)
+		.where(eq(schema.quizQuestions.id, questionId))
+		.returning();
+
+	return deleted;
+}
+
+/**
+ * Admin: Get all users enriched with enrollment and completion statistics
+ */
+export async function getAllUsersDetailed() {
+	const allUsers = await db.query.users.findMany({
+		with: {
+			enrollments: true,
+			progress: true
+		},
+		orderBy: [asc(schema.users.id)]
+	});
+
+	return allUsers.map((u) => ({
+		id: u.id,
+		name: u.name,
+		email: u.email,
+		isAdmin: Boolean(u.isAdmin),
+		enrollmentCount: u.enrollments?.length ?? 0,
+		completedCount: (u.progress || []).filter((p) => p.completed).length
+	}));
+}
+
+/**
+ * Admin: Update an existing user
+ * @param {number} id
+ * @param {{ name?: string, email?: string, isAdmin?: boolean, passwordHash?: string }} data
+ */
+export async function updateUser(id, data) {
+	const userId = Number(id);
+	const valuesToUpdate = {};
+	if (data.name !== undefined) valuesToUpdate.name = data.name.trim();
+	if (data.email !== undefined) valuesToUpdate.email = data.email.toLowerCase().trim();
+	if (data.isAdmin !== undefined) valuesToUpdate.isAdmin = Boolean(data.isAdmin);
+	if (data.passwordHash) valuesToUpdate.passwordHash = data.passwordHash;
+
+	const [updated] = await db
+		.update(schema.users)
+		.set(valuesToUpdate)
+		.where(eq(schema.users.id, userId))
+		.returning();
+
+	if (!updated) return null;
+	const { passwordHash, ...safeUser } = updated;
+	return safeUser;
+}
+
+/**
+ * Admin: Delete a user
+ * @param {number} id
+ */
+export async function deleteUser(id) {
+	const userId = Number(id);
+	const [deleted] = await db.delete(schema.users).where(eq(schema.users.id, userId)).returning();
+
+	return deleted;
+}
+
+/**
+ * Admin: Get system-wide platform telemetry / overview stats
+ */
+export async function getAdminTelemetry() {
+	const [allUsers, allCourses, allModules, allEnrollments, allProgress, allAnnouncements] =
+		await Promise.all([
+			db.query.users.findMany(),
+			db.query.courses.findMany(),
+			db.query.modules.findMany(),
+			db.query.enrollments.findMany(),
+			db.query.userProgress.findMany({ where: eq(schema.userProgress.completed, true) }),
+			db.query.announcements.findMany()
+		]);
+
+	const adminsCount = allUsers.filter((u) => u.isAdmin).length;
+	const studentsCount = allUsers.length - adminsCount;
+	const readingCount = allModules.filter((m) => m.type === 'reading').length;
+	const quizCount = allModules.filter((m) => m.type === 'quiz').length;
+
+	return {
+		totalUsers: allUsers.length,
+		adminsCount,
+		studentsCount,
+		totalCourses: allCourses.length,
+		totalModules: allModules.length,
+		readingCount,
+		quizCount,
+		totalEnrollments: allEnrollments.length,
+		totalCompletions: allProgress.length,
+		totalAnnouncements: allAnnouncements.length
+	};
+}

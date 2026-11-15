@@ -27,7 +27,14 @@
 <div class="card-interactive group relative flex flex-col overflow-hidden">
 	<!-- Image Header with Code Badge -->
 	<div class="relative aspect-2/1 w-full overflow-hidden bg-neutral-800">
-		<img src={course.image} alt={course.title} class="h-full w-full object-cover" />
+		<img
+			src={course.image}
+			alt={course.title}
+			class="h-full w-full object-cover"
+			onerror={(e) => {
+				e.currentTarget.src = '/images/courses/duck-1.jpg';
+			}}
+		/>
 		<span class="badge-tag absolute top-3 left-3">
 			{course.code}
 		</span>

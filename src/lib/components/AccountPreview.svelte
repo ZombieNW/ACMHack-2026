@@ -72,23 +72,12 @@
 				<p class="truncate text-sm font-bold text-neutral-100">{user?.name}</p>
 				<p class="truncate text-sm text-neutral-400">{user?.email}</p>
 				{#if user?.isAdmin}
-					<span class="badge-admin mt-1.5"> 🛡️ Administrator </span>
+					<span class="badge-admin mt-1.5 flex items-center gap-1"> Admin </span>
 				{/if}
 			</div>
 
 			<!-- Menu actions -->
 			<div class="mt-1 space-y-1">
-				{#if user?.isAdmin}
-					<a
-						href="/admin"
-						onclick={() => (isOpen = false)}
-						class="flex w-full items-center gap-2 rounded-xl px-3 py-2 text-sm font-medium text-amber-300 transition hover:bg-neutral-900"
-					>
-						<span>🛡️</span>
-						<span>Admin Dashboard</span>
-					</a>
-				{/if}
-
 				<form method="POST" action="/logout">
 					<button
 						type="submit"
