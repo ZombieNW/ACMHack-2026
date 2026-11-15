@@ -34,7 +34,7 @@ export const initialCourses = [
 		id: 1,
 		code: 'CS-101',
 		title: 'Intro to Web Development',
-		instructor: 'Dr. Amara Okafor',
+		instructor: 'Dr. Nolan Carlisle',
 		category: 'Computer Science',
 		enrolled: true,
 		startDate: now - 14 * oneDay,
@@ -247,7 +247,7 @@ button?.addEventListener('click', (event) => {
 		id: 2,
 		code: 'DS-210',
 		title: 'Data Science with Python',
-		instructor: 'Prof. Liam Chen',
+		instructor: 'Prof. Haley Berger',
 		category: 'Data Science',
 		enrolled: true,
 		startDate: now - 10 * oneDay,
@@ -352,7 +352,7 @@ print(top_performers)
 				completed: false,
 				content: `# Exploratory Visualization with Matplotlib & Seaborn
 
-Effective data visualization bridges raw numbers and human insight. 
+Effective data visualization bridges raw numbers and human insight.
 
 ### Choosing the Right Visualization
 - **Histograms & KDE**: Assess distribution symmetry, modality, and spread of continuous variables.
@@ -760,7 +760,7 @@ When testing ad creatives, test **one variable at a time** (e.g., headline copy,
 		id: 5,
 		code: 'ST-120',
 		title: 'Statistics for Beginners',
-		instructor: 'Dr. Raj Patel',
+		instructor: 'Dr. Zachary Runnels',
 		category: 'Statistics',
 		enrolled: true,
 		startDate: now - 5 * oneDay,
@@ -915,7 +915,7 @@ The **p-value** is the probability of observing sample data at least as extreme 
 		id: 6,
 		code: 'PM-300',
 		title: 'Project Management Fundamentals',
-		instructor: 'Grace Kim',
+		instructor: 'Dr. Kirrah',
 		category: 'Project Management',
 		enrolled: false,
 		startDate: now - 2 * oneDay,
