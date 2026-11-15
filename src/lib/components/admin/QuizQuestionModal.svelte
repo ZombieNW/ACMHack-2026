@@ -17,9 +17,10 @@
 	$effect(() => {
 		if (question) {
 			questionText = question.question || '';
-			options = Array.isArray(question.options) && question.options.length > 0
-				? [...question.options]
-				: ['', '', '', ''];
+			options =
+				Array.isArray(question.options) && question.options.length > 0
+					? [...question.options]
+					: ['', '', '', ''];
 			answer = Number(question.answer) || 0;
 			order = question.order || 1;
 		} else {
@@ -96,7 +97,10 @@
 				{/if}
 
 				<div>
-					<label for="question-text" class="mb-1 block text-xs font-semibold text-neutral-300">
+					<label
+						for="question-text"
+						class="mb-1 block text-xs font-semibold text-neutral-300"
+					>
 						Question *
 					</label>
 					<textarea
@@ -106,8 +110,7 @@
 						bind:value={questionText}
 						placeholder="Enter question text..."
 						required
-						class="input-base resize-none text-sm"
-					></textarea>
+						class="input-base resize-none text-sm"></textarea>
 				</div>
 
 				<div class="flex items-center justify-between">
@@ -131,7 +134,7 @@
 							<label
 								class="flex cursor-pointer items-center gap-1.5 rounded border border-neutral-800 bg-neutral-950 px-2.5 py-1.5 text-xs {answer ===
 								index
-									? 'border-emerald-500/60 bg-emerald-950/40 text-emerald-300 font-semibold'
+									? 'border-emerald-500/60 bg-emerald-950/40 font-semibold text-emerald-300'
 									: 'text-neutral-400'}"
 								title="Mark correct"
 							>
@@ -168,7 +171,10 @@
 				</div>
 
 				<div>
-					<label for="question-order" class="mb-1 block text-xs font-semibold text-neutral-300">
+					<label
+						for="question-order"
+						class="mb-1 block text-xs font-semibold text-neutral-300"
+					>
 						Order #
 					</label>
 					<input
@@ -184,9 +190,7 @@
 
 				<!-- Actions -->
 				<div class="flex items-center justify-end gap-2 border-t border-neutral-800 pt-4">
-					<button type="button" onclick={onClose} class="btn-secondary">
-						Cancel
-					</button>
+					<button type="button" onclick={onClose} class="btn-secondary"> Cancel </button>
 					<button type="submit" class="btn-primary">
 						{isEditing ? 'Save' : 'Add'}
 					</button>

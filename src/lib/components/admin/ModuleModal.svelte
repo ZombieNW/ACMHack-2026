@@ -94,7 +94,10 @@
 					<!-- Top row: Title and Type -->
 					<div class="grid grid-cols-1 gap-3 sm:grid-cols-3">
 						<div class="sm:col-span-2">
-							<label for="module-title" class="mb-1 block text-xs font-semibold text-neutral-300">
+							<label
+								for="module-title"
+								class="mb-1 block text-xs font-semibold text-neutral-300"
+							>
 								Module Title *
 							</label>
 							<input
@@ -109,7 +112,10 @@
 						</div>
 
 						<div>
-							<label for="module-type" class="mb-1 block text-xs font-semibold text-neutral-300">
+							<label
+								for="module-type"
+								class="mb-1 block text-xs font-semibold text-neutral-300"
+							>
 								Type *
 							</label>
 							<select
@@ -127,7 +133,10 @@
 					<!-- Second row: Duration, Points, Order -->
 					<div class="grid grid-cols-3 gap-3">
 						<div>
-							<label for="module-duration" class="mb-1 block text-xs font-semibold text-neutral-300">
+							<label
+								for="module-duration"
+								class="mb-1 block text-xs font-semibold text-neutral-300"
+							>
 								Duration (mins)
 							</label>
 							<input
@@ -142,7 +151,10 @@
 						</div>
 
 						<div>
-							<label for="module-points" class="mb-1 block text-xs font-semibold text-neutral-300">
+							<label
+								for="module-points"
+								class="mb-1 block text-xs font-semibold text-neutral-300"
+							>
 								Points
 							</label>
 							<input
@@ -157,7 +169,10 @@
 						</div>
 
 						<div>
-							<label for="module-order" class="mb-1 block text-xs font-semibold text-neutral-300">
+							<label
+								for="module-order"
+								class="mb-1 block text-xs font-semibold text-neutral-300"
+							>
 								Order #
 							</label>
 							<input
@@ -175,15 +190,20 @@
 					<!-- Content / Markdown Editor -->
 					<div class="space-y-2">
 						<div class="flex items-center justify-between">
-							<label for="module-content" class="block text-xs font-semibold text-neutral-300">
+							<label
+								for="module-content"
+								class="block text-xs font-semibold text-neutral-300"
+							>
 								{type === 'quiz' ? 'Quiz Instructions' : 'Content (Markdown)'}
 							</label>
-							<div class="flex items-center gap-1 rounded border border-neutral-800 bg-neutral-950 p-0.5 text-xs">
+							<div
+								class="flex items-center gap-1 rounded border border-neutral-800 bg-neutral-950 p-0.5 text-xs"
+							>
 								<button
 									type="button"
 									onclick={() => (activeTab = 'write')}
 									class="rounded px-2.5 py-0.5 transition {activeTab === 'write'
-										? 'bg-neutral-800 text-white font-medium'
+										? 'bg-neutral-800 font-medium text-white'
 										: 'text-neutral-400 hover:text-white'}"
 								>
 									Write
@@ -192,7 +212,7 @@
 									type="button"
 									onclick={() => (activeTab = 'preview')}
 									class="rounded px-2.5 py-0.5 transition {activeTab === 'preview'
-										? 'bg-neutral-800 text-amber-300 font-medium'
+										? 'bg-neutral-800 font-medium text-amber-300'
 										: 'text-neutral-400 hover:text-white'}"
 								>
 									Preview
@@ -218,7 +238,8 @@
 								</button>
 								<button
 									type="button"
-									onclick={() => insertSnippet('```js\nconsole.log("hello");\n```')}
+									onclick={() =>
+										insertSnippet('```js\nconsole.log("hello");\n```')}
 									class="rounded border border-neutral-800 bg-neutral-950 px-2 py-0.5 hover:text-white"
 								>
 									+ Code
@@ -231,8 +252,7 @@
 								rows="9"
 								bind:value={content}
 								placeholder="Enter markdown text..."
-								class="input-base font-mono text-xs"
-							></textarea>
+								class="input-base font-mono text-xs"></textarea>
 						{:else}
 							<div
 								class="prose max-h-[220px] min-h-[160px] overflow-y-auto rounded-xl border border-neutral-800 bg-neutral-950 p-3 text-xs"
@@ -245,10 +265,10 @@
 				</div>
 
 				<!-- Actions -->
-				<div class="mt-5 flex items-center justify-end gap-2 border-t border-neutral-800 pt-4">
-					<button type="button" onclick={onClose} class="btn-secondary">
-						Cancel
-					</button>
+				<div
+					class="mt-5 flex items-center justify-end gap-2 border-t border-neutral-800 pt-4"
+				>
+					<button type="button" onclick={onClose} class="btn-secondary"> Cancel </button>
 					<button type="submit" class="btn-primary">
 						{isEditing ? 'Save' : 'Create'}
 					</button>

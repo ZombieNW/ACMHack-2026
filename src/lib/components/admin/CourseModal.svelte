@@ -1,12 +1,7 @@
 <script>
 	import { enhance } from '$app/forms';
 
-	let {
-		open = false,
-		course = null,
-		categories = [],
-		onClose = () => {}
-	} = $props();
+	let { open = false, course = null, categories = [], onClose = () => {} } = $props();
 
 	let code = $state('');
 	let title = $state('');
@@ -23,7 +18,7 @@
 			code = course.code || '';
 			title = course.title || '';
 			instructor = course.instructor || '';
-			category = course.category || (categories[0] || 'Programming');
+			category = course.category || categories[0] || 'Programming';
 			isCustomCategory = !categories.includes(course.category);
 			customCategory = isCustomCategory ? course.category : '';
 			description = course.description || '';
@@ -92,7 +87,10 @@
 
 				<div class="grid grid-cols-1 gap-3 sm:grid-cols-2">
 					<div>
-						<label for="course-code" class="mb-1 block text-xs font-semibold text-neutral-300">
+						<label
+							for="course-code"
+							class="mb-1 block text-xs font-semibold text-neutral-300"
+						>
 							Course Code *
 						</label>
 						<input
@@ -107,7 +105,10 @@
 					</div>
 
 					<div>
-						<label for="course-category" class="mb-1 block text-xs font-semibold text-neutral-300">
+						<label
+							for="course-category"
+							class="mb-1 block text-xs font-semibold text-neutral-300"
+						>
 							Category *
 						</label>
 						{#if !isCustomCategory}
@@ -159,7 +160,10 @@
 				</div>
 
 				<div>
-					<label for="course-title" class="mb-1 block text-xs font-semibold text-neutral-300">
+					<label
+						for="course-title"
+						class="mb-1 block text-xs font-semibold text-neutral-300"
+					>
 						Course Title *
 					</label>
 					<input
@@ -175,7 +179,10 @@
 
 				<div class="grid grid-cols-1 gap-3 sm:grid-cols-2">
 					<div>
-						<label for="course-instructor" class="mb-1 block text-xs font-semibold text-neutral-300">
+						<label
+							for="course-instructor"
+							class="mb-1 block text-xs font-semibold text-neutral-300"
+						>
 							Instructor *
 						</label>
 						<input
@@ -190,7 +197,10 @@
 					</div>
 
 					<div>
-						<label for="course-start-date" class="mb-1 block text-xs font-semibold text-neutral-300">
+						<label
+							for="course-start-date"
+							class="mb-1 block text-xs font-semibold text-neutral-300"
+						>
 							Start Date
 						</label>
 						<input
@@ -204,7 +214,10 @@
 				</div>
 
 				<div>
-					<label for="course-image" class="mb-1 block text-xs font-semibold text-neutral-300">
+					<label
+						for="course-image"
+						class="mb-1 block text-xs font-semibold text-neutral-300"
+					>
 						Image URL
 					</label>
 					<input
@@ -218,7 +231,10 @@
 				</div>
 
 				<div>
-					<label for="course-desc" class="mb-1 block text-xs font-semibold text-neutral-300">
+					<label
+						for="course-desc"
+						class="mb-1 block text-xs font-semibold text-neutral-300"
+					>
 						Description
 					</label>
 					<textarea
@@ -227,15 +243,12 @@
 						rows="3"
 						bind:value={description}
 						placeholder="Course overview..."
-						class="input-base resize-none text-sm"
-					></textarea>
+						class="input-base resize-none text-sm"></textarea>
 				</div>
 
 				<!-- Actions -->
 				<div class="flex items-center justify-end gap-2 border-t border-neutral-800 pt-4">
-					<button type="button" onclick={onClose} class="btn-secondary">
-						Cancel
-					</button>
+					<button type="button" onclick={onClose} class="btn-secondary"> Cancel </button>
 					<button type="submit" class="btn-primary">
 						{isEditing ? 'Save' : 'Create'}
 					</button>

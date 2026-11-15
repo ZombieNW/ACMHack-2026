@@ -1,6 +1,7 @@
 <script>
 	import { enhance } from '$app/forms';
 	import { untrack } from 'svelte';
+	import { fireQuizCelebration } from '#lib/utils/confetti.js';
 
 	let { module, form, quizScore = $bindable(null), onScoreChange = () => {} } = $props();
 
@@ -48,6 +49,13 @@
 		});
 	});
 
+	$effect(() => {
+		if (form?.submitted && !localSubmitted) {
+			localSubmitted = true;
+			fireQuizCelebration();
+		}
+	});
+
 	function handleOptionChange(questionId, optIndex) {
 		if (isLocked) return;
 		localAnswers = { ...localAnswers, [questionId]: optIndex };
@@ -72,6 +80,7 @@
 				return async ({ result, update }) => {
 					if (result.type === 'success') {
 						localSubmitted = true;
+						fireQuizCelebration();
 					}
 					await update();
 				};

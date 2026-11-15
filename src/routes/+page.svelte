@@ -97,9 +97,18 @@
 								</button>
 							</form>
 
-							<div class="min-w-0 flex-1">
-								<div class="truncate text-sm text-neutral-200">{todo.title}</div>
-								<div class="truncate text-sm text-neutral-400">
+							<a
+								href="/courses/{todo.courseId}/modules/{todo.id}"
+								class="group min-w-0 flex-1 transition"
+							>
+								<div
+									class="truncate text-sm font-medium text-neutral-200 group-hover:text-amber-300"
+								>
+									{todo.title}
+								</div>
+								<div
+									class="truncate text-sm text-neutral-400 group-hover:text-neutral-300"
+								>
 									{todo.courseCode} · {todo.courseTitle}
 								</div>
 								<div class="text-sm">
@@ -112,7 +121,7 @@
 										<span class="text-neutral-600"> · {todo.duration} min</span>
 									{/if}
 								</div>
-							</div>
+							</a>
 						</li>
 					{:else}
 						<li class="py-6 text-center text-sm text-neutral-400">

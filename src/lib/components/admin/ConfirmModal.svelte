@@ -25,7 +25,7 @@
 				<span class="text-xl">🗑️</span>
 				<div class="flex-1">
 					<h3 class="text-sm font-bold text-white">{title}</h3>
-					<p class="mt-1 text-xs text-neutral-400 leading-relaxed">
+					<p class="mt-1 text-xs leading-relaxed text-neutral-400">
 						{message}
 					</p>
 				</div>
@@ -46,9 +46,7 @@
 					<input type="hidden" name={k} value={v} />
 				{/each}
 
-				<button type="button" onclick={onClose} class="btn-secondary">
-					Cancel
-				</button>
+				<button type="button" onclick={onClose} class="btn-secondary"> Cancel </button>
 				<button
 					type="submit"
 					class="inline-flex cursor-pointer items-center justify-center gap-1.5 rounded-xl border-2 border-red-500/60 bg-red-500/20 px-3 py-1.5 text-xs font-semibold text-red-200 transition hover:border-red-400 hover:bg-red-500/30"

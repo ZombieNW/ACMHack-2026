@@ -191,9 +191,7 @@
 			<h1 class="text-2xl font-bold text-white">Admin</h1>
 			<p class="text-xs text-neutral-400">Manage courses, users, and announcements.</p>
 		</div>
-		<a href="/" class="btn-secondary text-xs">
-			← Back to site
-		</a>
+		<a href="/" class="btn-secondary text-xs"> ← Back to site </a>
 	</div>
 
 	<!-- Alert Messages -->
@@ -202,7 +200,9 @@
 			{form.error}
 		</div>
 	{:else if form?.success}
-		<div class="rounded-lg border border-emerald-500/30 bg-emerald-950/40 p-3 text-xs text-emerald-200">
+		<div
+			class="rounded-lg border border-emerald-500/30 bg-emerald-950/40 p-3 text-xs text-emerald-200"
+		>
 			✓ Saved successfully.
 		</div>
 	{/if}
@@ -256,7 +256,9 @@
 		{#if selectedCourse}
 			<!-- SUB-VIEW: COURSE MODULES -->
 			<div class="space-y-4">
-				<div class="flex flex-wrap items-center justify-between gap-3 rounded-xl border border-neutral-800 bg-neutral-900/60 p-4">
+				<div
+					class="flex flex-wrap items-center justify-between gap-3 rounded-xl border border-neutral-800 bg-neutral-900/60 p-4"
+				>
 					<div class="flex items-center gap-3">
 						<button
 							type="button"
@@ -270,11 +272,14 @@
 								<span class="font-mono text-xs font-bold text-amber-300">
 									{selectedCourse.code}
 								</span>
-								<h2 class="text-base font-bold text-white">{selectedCourse.title}</h2>
+								<h2 class="text-base font-bold text-white">
+									{selectedCourse.title}
+								</h2>
 								<span class="badge-tag">{selectedCourse.category}</span>
 							</div>
 							<p class="text-xs text-neutral-400">
-								Instructor: {selectedCourse.instructor} · {selectedCourse.modules.length} modules
+								Instructor: {selectedCourse.instructor} · {selectedCourse.modules
+									.length} modules
 							</p>
 						</div>
 					</div>
@@ -300,24 +305,38 @@
 				<!-- Modules List -->
 				<div class="space-y-2">
 					{#if selectedCourse.modules.length === 0}
-						<div class="rounded-xl border border-dashed border-neutral-800 p-8 text-center text-xs text-neutral-400">
+						<div
+							class="rounded-xl border border-dashed border-neutral-800 p-8 text-center text-xs text-neutral-400"
+						>
 							No modules yet. Click "+ Add Module" above.
 						</div>
 					{:else}
 						{#each selectedCourse.modules as mod (mod.id)}
-							<div class="rounded-xl border border-neutral-800 bg-neutral-900/60 p-3.5">
-								<div class="flex flex-col gap-2 sm:flex-row sm:items-center sm:justify-between">
+							<div
+								class="rounded-xl border border-neutral-800 bg-neutral-900/60 p-3.5"
+							>
+								<div
+									class="flex flex-col gap-2 sm:flex-row sm:items-center sm:justify-between"
+								>
 									<div class="flex items-center gap-3">
-										<span class="font-mono text-xs text-neutral-400">#{mod.order}</span>
+										<span class="font-mono text-xs text-neutral-400"
+											>#{mod.order}</span
+										>
 										<div>
 											<div class="flex items-center gap-2">
-												<span class="text-sm font-semibold text-white">{mod.title}</span>
+												<span class="text-sm font-semibold text-white"
+													>{mod.title}</span
+												>
 												{#if mod.type === 'reading'}
-													<span class="rounded bg-neutral-800 px-1.5 py-0.5 text-[11px] text-cyan-300">
+													<span
+														class="rounded bg-neutral-800 px-1.5 py-0.5 text-[11px] text-cyan-300"
+													>
 														📄 Reading
 													</span>
 												{:else}
-													<span class="rounded bg-neutral-800 px-1.5 py-0.5 text-[11px] text-amber-300">
+													<span
+														class="rounded bg-neutral-800 px-1.5 py-0.5 text-[11px] text-amber-300"
+													>
 														❓ Quiz ({mod.quizQuestions?.length ?? 0} questions)
 													</span>
 												{/if}
@@ -334,11 +353,16 @@
 												type="button"
 												onclick={() => {
 													expandedQuizModuleId =
-														expandedQuizModuleId === mod.id ? null : mod.id;
+														expandedQuizModuleId === mod.id
+															? null
+															: mod.id;
 												}}
 												class="btn-secondary px-2 py-1 text-xs"
 											>
-												❓ Questions ({mod.quizQuestions?.length ?? 0}) {expandedQuizModuleId === mod.id ? '▲' : '▼'}
+												❓ Questions ({mod.quizQuestions?.length ?? 0}) {expandedQuizModuleId ===
+												mod.id
+													? '▲'
+													: '▼'}
 											</button>
 										{/if}
 
@@ -374,8 +398,12 @@
 
 								<!-- Quiz Questions Panel -->
 								{#if mod.type === 'quiz' && expandedQuizModuleId === mod.id}
-									<div class="mt-3 space-y-2 rounded-lg border border-neutral-800 bg-neutral-950 p-3 text-xs">
-										<div class="flex items-center justify-between border-b border-neutral-800 pb-2">
+									<div
+										class="mt-3 space-y-2 rounded-lg border border-neutral-800 bg-neutral-950 p-3 text-xs"
+									>
+										<div
+											class="flex items-center justify-between border-b border-neutral-800 pb-2"
+										>
 											<span class="font-semibold text-neutral-300">
 												Questions ({mod.quizQuestions?.length ?? 0})
 											</span>
@@ -395,15 +423,28 @@
 										{:else}
 											<div class="space-y-1.5">
 												{#each mod.quizQuestions as q, qIdx (q.id)}
-													<div class="flex items-start justify-between gap-2 rounded border border-neutral-800 bg-neutral-900 p-2">
-														<div class="space-y-1 flex-1">
+													<div
+														class="flex items-start justify-between gap-2 rounded border border-neutral-800 bg-neutral-900 p-2"
+													>
+														<div class="flex-1 space-y-1">
 															<p class="font-medium text-neutral-200">
 																{qIdx + 1}. {q.question}
 															</p>
-															<div class="ml-4 flex flex-wrap gap-2 text-neutral-400">
+															<div
+																class="ml-4 flex flex-wrap gap-2 text-neutral-400"
+															>
 																{#each q.options as opt, optIdx}
-																	<span class={optIdx === q.answer ? 'text-emerald-400 font-semibold' : ''}>
-																		{String.fromCharCode(65 + optIdx)}: {opt} {optIdx === q.answer ? '✓' : ''}
+																	<span
+																		class={optIdx === q.answer
+																			? 'font-semibold text-emerald-400'
+																			: ''}
+																	>
+																		{String.fromCharCode(
+																			65 + optIdx
+																		)}: {opt}
+																		{optIdx === q.answer
+																			? '✓'
+																			: ''}
 																	</span>
 																{/each}
 															</div>
@@ -411,16 +452,21 @@
 														<div class="flex items-center gap-1">
 															<button
 																type="button"
-																onclick={() => openEditQuizQuestion(mod, q)}
-																class="rounded p-1 hover:bg-neutral-800 text-neutral-300"
+																onclick={() =>
+																	openEditQuizQuestion(mod, q)}
+																class="rounded p-1 text-neutral-300 hover:bg-neutral-800"
 																title="Edit"
 															>
 																✏️
 															</button>
 															<button
 																type="button"
-																onclick={() => confirmDeleteQuizQuestion(mod.id, q)}
-																class="rounded p-1 hover:bg-neutral-800 text-red-400"
+																onclick={() =>
+																	confirmDeleteQuizQuestion(
+																		mod.id,
+																		q
+																	)}
+																class="rounded p-1 text-red-400 hover:bg-neutral-800"
 																title="Delete"
 															>
 																🗑️
@@ -454,7 +500,8 @@
 							class="h-9 rounded-xl border-2 border-neutral-800 bg-neutral-950 px-3 text-xs text-neutral-200 focus:border-amber-500/80 focus:outline-none"
 						>
 							{#each categories as cat}
-								<option value={cat}>{cat === 'All' ? 'All Categories' : cat}</option>
+								<option value={cat}>{cat === 'All' ? 'All Categories' : cat}</option
+								>
 							{/each}
 						</select>
 					</div>
@@ -469,23 +516,27 @@
 				</div>
 
 				<!-- Table -->
-				<div class="overflow-x-auto rounded-xl border-2 border-neutral-800 bg-neutral-900/50">
+				<div
+					class="overflow-x-auto rounded-xl border-2 border-neutral-800 bg-neutral-900/50"
+				>
 					<table class="w-full text-left text-xs text-neutral-300">
-						<thead class="border-b border-neutral-800 bg-neutral-950/60 font-semibold uppercase text-neutral-400">
+						<thead
+							class="border-b border-neutral-800 bg-neutral-950/60 font-semibold text-neutral-400 uppercase"
+						>
 							<tr>
-								<th class="py-2.5 pl-4 pr-2">Code</th>
+								<th class="py-2.5 pr-2 pl-4">Code</th>
 								<th class="px-3 py-2.5">Title</th>
 								<th class="px-3 py-2.5">Category</th>
 								<th class="px-3 py-2.5">Instructor</th>
 								<th class="px-3 py-2.5 text-center">Modules</th>
 								<th class="px-3 py-2.5 text-center">Students</th>
-								<th class="py-2.5 pl-2 pr-4 text-right">Actions</th>
+								<th class="py-2.5 pr-4 pl-2 text-right">Actions</th>
 							</tr>
 						</thead>
 						<tbody class="divide-y divide-neutral-800/60">
 							{#each filteredCourses as course (course.id)}
 								<tr class="transition hover:bg-neutral-800/30">
-									<td class="py-2.5 pl-4 pr-2 font-mono font-bold text-amber-300">
+									<td class="py-2.5 pr-2 pl-4 font-mono font-bold text-amber-300">
 										{course.code}
 									</td>
 									<td class="px-3 py-2.5 font-semibold text-white">
@@ -500,10 +551,15 @@
 									<td class="px-3 py-2.5">
 										<span class="badge-tag">{course.category}</span>
 									</td>
-									<td class="px-3 py-2.5 text-neutral-300">{course.instructor}</td>
-									<td class="px-3 py-2.5 text-center font-mono">{course.moduleCount}</td>
-									<td class="px-3 py-2.5 text-center font-mono">{course.enrollmentCount}</td>
-									<td class="py-2.5 pl-2 pr-4 text-right">
+									<td class="px-3 py-2.5 text-neutral-300">{course.instructor}</td
+									>
+									<td class="px-3 py-2.5 text-center font-mono"
+										>{course.moduleCount}</td
+									>
+									<td class="px-3 py-2.5 text-center font-mono"
+										>{course.enrollmentCount}</td
+									>
+									<td class="py-2.5 pr-4 pl-2 text-right">
 										<div class="flex items-center justify-end gap-1">
 											<button
 												type="button"
@@ -577,11 +633,7 @@
 					</select>
 				</div>
 
-				<button
-					type="button"
-					onclick={openCreateUser}
-					class="btn-primary py-1.5 text-xs"
-				>
+				<button type="button" onclick={openCreateUser} class="btn-primary py-1.5 text-xs">
 					➕ Add User
 				</button>
 			</div>
@@ -589,24 +641,28 @@
 			<!-- Users Table -->
 			<div class="overflow-x-auto rounded-xl border-2 border-neutral-800 bg-neutral-900/50">
 				<table class="w-full text-left text-xs text-neutral-300">
-					<thead class="border-b border-neutral-800 bg-neutral-950/60 font-semibold uppercase text-neutral-400">
+					<thead
+						class="border-b border-neutral-800 bg-neutral-950/60 font-semibold text-neutral-400 uppercase"
+					>
 						<tr>
-							<th class="py-2.5 pl-4 pr-3">Name</th>
+							<th class="py-2.5 pr-3 pl-4">Name</th>
 							<th class="px-3 py-2.5">Email</th>
 							<th class="px-3 py-2.5">Role</th>
 							<th class="px-3 py-2.5 text-center">Enrolled</th>
 							<th class="px-3 py-2.5 text-center">Completed</th>
 							<th class="px-3 py-2.5 text-right">ID</th>
-							<th class="py-2.5 pl-2 pr-4 text-right">Actions</th>
+							<th class="py-2.5 pr-4 pl-2 text-right">Actions</th>
 						</tr>
 					</thead>
 					<tbody class="divide-y divide-neutral-800/60">
 						{#each filteredUsers as user (user.id)}
 							<tr class="transition hover:bg-neutral-800/30">
-								<td class="py-2.5 pl-4 pr-3 font-semibold text-white">
+								<td class="py-2.5 pr-3 pl-4 font-semibold text-white">
 									{user.name}
 									{#if user.id === currentAdminId}
-										<span class="text-[10px] text-amber-400 font-normal ml-1">(You)</span>
+										<span class="ml-1 text-[10px] font-normal text-amber-400"
+											>(You)</span
+										>
 									{/if}
 								</td>
 								<td class="px-3 py-2.5 font-mono text-neutral-400">{user.email}</td>
@@ -614,13 +670,22 @@
 									{#if user.isAdmin}
 										<span class="badge-admin">Admin</span>
 									{:else}
-										<span class="rounded bg-neutral-800 px-2 py-0.5 text-neutral-400">Student</span>
+										<span
+											class="rounded bg-neutral-800 px-2 py-0.5 text-neutral-400"
+											>Student</span
+										>
 									{/if}
 								</td>
-								<td class="px-3 py-2.5 text-center font-mono">{user.enrollmentCount ?? 0}</td>
-								<td class="px-3 py-2.5 text-center font-mono">{user.completedCount ?? 0}</td>
-								<td class="px-3 py-2.5 text-right font-mono text-neutral-400">#{user.id}</td>
-								<td class="py-2.5 pl-2 pr-4 text-right">
+								<td class="px-3 py-2.5 text-center font-mono"
+									>{user.enrollmentCount ?? 0}</td
+								>
+								<td class="px-3 py-2.5 text-center font-mono"
+									>{user.completedCount ?? 0}</td
+								>
+								<td class="px-3 py-2.5 text-right font-mono text-neutral-400"
+									>#{user.id}</td
+								>
+								<td class="py-2.5 pr-4 pl-2 text-right">
 									<div class="flex items-center justify-end gap-1">
 										<button
 											type="button"
@@ -635,7 +700,9 @@
 											onclick={() => confirmDeleteUser(user)}
 											disabled={user.id === currentAdminId}
 											class="btn-ghost p-1 text-neutral-400 hover:text-red-400 disabled:opacity-20"
-											title={user.id === currentAdminId ? 'Cannot delete your own account' : 'Delete user'}
+											title={user.id === currentAdminId
+												? 'Cannot delete your own account'
+												: 'Delete user'}
 										>
 											🗑️
 										</button>
@@ -678,8 +745,7 @@
 						required
 						bind:value={newAnnouncementText}
 						placeholder="Announcement message..."
-						class="input-base resize-none text-xs"
-					></textarea>
+						class="input-base resize-none text-xs"></textarea>
 
 					<button
 						type="submit"
@@ -693,16 +759,27 @@
 
 			<!-- Announcements List -->
 			<div class="space-y-3 rounded-xl border border-neutral-800 bg-neutral-900/50 p-4">
-				<h3 class="text-sm font-bold text-white">Current Announcements ({announcementsList.length})</h3>
+				<h3 class="text-sm font-bold text-white">
+					Current Announcements ({announcementsList.length})
+				</h3>
 
 				{#if announcementsList.length === 0}
-					<p class="py-4 text-center text-xs text-neutral-400">No active announcements.</p>
+					<p class="py-4 text-center text-xs text-neutral-400">
+						No active announcements.
+					</p>
 				{:else}
 					<ul class="divide-y divide-neutral-800/60 text-xs">
 						{#each announcementsList as item (item.id)}
-							<li class="flex items-start justify-between gap-3 py-2.5 first:pt-0 last:pb-0">
-								<span class="text-neutral-200 leading-snug">{item.content}</span>
-								<form method="POST" action="?/deleteAnnouncement" use:enhance class="shrink-0">
+							<li
+								class="flex items-start justify-between gap-3 py-2.5 first:pt-0 last:pb-0"
+							>
+								<span class="leading-snug text-neutral-200">{item.content}</span>
+								<form
+									method="POST"
+									action="?/deleteAnnouncement"
+									use:enhance
+									class="shrink-0"
+								>
 									<input type="hidden" name="id" value={item.id} />
 									<button
 										type="submit"

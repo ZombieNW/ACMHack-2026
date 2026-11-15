@@ -1,12 +1,7 @@
 <script>
 	import { enhance } from '$app/forms';
 
-	let {
-		open = false,
-		user = null,
-		currentAdminId = null,
-		onClose = () => {}
-	} = $props();
+	let { open = false, user = null, currentAdminId = null, onClose = () => {} } = $props();
 
 	let name = $state('');
 	let email = $state('');
@@ -76,7 +71,10 @@
 				{/if}
 
 				<div>
-					<label for="user-name" class="mb-1 block text-xs font-semibold text-neutral-300">
+					<label
+						for="user-name"
+						class="mb-1 block text-xs font-semibold text-neutral-300"
+					>
 						Name *
 					</label>
 					<input
@@ -91,7 +89,10 @@
 				</div>
 
 				<div>
-					<label for="user-email" class="mb-1 block text-xs font-semibold text-neutral-300">
+					<label
+						for="user-email"
+						class="mb-1 block text-xs font-semibold text-neutral-300"
+					>
 						Email *
 					</label>
 					<input
@@ -107,7 +108,10 @@
 
 				{#if !isEditing}
 					<div>
-						<label for="user-password" class="mb-1 block text-xs font-semibold text-neutral-300">
+						<label
+							for="user-password"
+							class="mb-1 block text-xs font-semibold text-neutral-300"
+						>
 							Password *
 						</label>
 						<input
@@ -123,7 +127,10 @@
 					</div>
 				{:else}
 					<div>
-						<label for="user-new-password" class="mb-1 block text-xs font-semibold text-neutral-300">
+						<label
+							for="user-new-password"
+							class="mb-1 block text-xs font-semibold text-neutral-300"
+						>
 							New Password (optional)
 						</label>
 						<input
@@ -154,9 +161,7 @@
 
 				<!-- Actions -->
 				<div class="flex items-center justify-end gap-2 border-t border-neutral-800 pt-4">
-					<button type="button" onclick={onClose} class="btn-secondary">
-						Cancel
-					</button>
+					<button type="button" onclick={onClose} class="btn-secondary"> Cancel </button>
 					<button type="submit" class="btn-primary">
 						{isEditing ? 'Save' : 'Create'}
 					</button>
